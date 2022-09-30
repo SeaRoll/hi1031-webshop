@@ -23,5 +23,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       # Build code
-      - name: Test & Sonarcloud
+      - name: Build & Test
         run: ./mvnw test
