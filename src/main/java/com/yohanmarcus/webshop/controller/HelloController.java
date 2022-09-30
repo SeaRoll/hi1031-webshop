@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.service.HelloService;
+import com.yohanmarcus.webshop.hello.HelloService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

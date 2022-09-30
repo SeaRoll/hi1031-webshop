@@ -1,4 +1,4 @@
-package com.yohanmarcus.webshop.model;
+package com.yohanmarcus.webshop.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,4 @@
-package com.yohanmarcus.webshop.service;
-
-import com.yohanmarcus.webshop.dao.HelloDao;
-import com.yohanmarcus.webshop.dao.HelloDaoImpl;
-import com.yohanmarcus.webshop.model.Hello;
+package com.yohanmarcus.webshop.hello;
 
 import java.util.List;
 

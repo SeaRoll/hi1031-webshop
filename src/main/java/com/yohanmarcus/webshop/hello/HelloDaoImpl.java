@@ -1,7 +1,6 @@
-package com.yohanmarcus.webshop.dao;
+package com.yohanmarcus.webshop.hello;
 
-import com.yohanmarcus.webshop.database.DatabaseConfig;
-import com.yohanmarcus.webshop.model.Hello;
+import com.yohanmarcus.webshop.util.DatabaseConfig;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package com.yohanmarcus.webshop.dao;
+package com.yohanmarcus.webshop.util;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,6 +1,5 @@
-package com.yohanmarcus.webshop.dao;
+package com.yohanmarcus.webshop.item;
 
-import com.yohanmarcus.webshop.model.Item;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -13,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.yohanmarcus.webshop.database.DatabaseConfig.closeConnection;
-import static com.yohanmarcus.webshop.database.DatabaseConfig.getConnection;
+import static com.yohanmarcus.webshop.util.DatabaseConfig.closeConnection;
+import static com.yohanmarcus.webshop.util.DatabaseConfig.getConnection;
 
 public class ItemDaoImpl implements ItemDao {
 

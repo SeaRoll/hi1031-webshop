@@ -1,4 +1,4 @@
-package com.yohanmarcus.webshop.database;
+package com.yohanmarcus.webshop.util;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;

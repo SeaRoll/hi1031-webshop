@@ -1,6 +1,5 @@
 package com.yohanmarcus.webshop.util;
 
-import com.yohanmarcus.webshop.database.DatabaseConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.testcontainers.containers.DockerComposeContainer;
