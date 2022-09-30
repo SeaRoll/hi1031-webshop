@@ -1,4 +1,4 @@
-package com.yohanmarcus.webshop.model;
+package com.yohanmarcus.webshop.hello;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
