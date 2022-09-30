@@ -1,19 +1,41 @@
 package com.yohanmarcus.webshop.dao;
 
 import com.yohanmarcus.webshop.model.Item;
+import org.apache.commons.dbutils.BasicRowProcessor;
+import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.yohanmarcus.webshop.database.DatabaseConfig.closeConnection;
 import static com.yohanmarcus.webshop.database.DatabaseConfig.getConnection;
 
 public class ItemDaoImpl implements ItemDao {
+
+  private final ItemHandler itemHandler = new ItemHandler();
+
+  private static class ItemHandler extends BeanListHandler<Item> {
+    public ItemHandler() {
+      super(Item.class, new BasicRowProcessor(new BeanProcessor(getColumnsToFieldsMap())));
+    }
+
+    private static Map<String, String> getColumnsToFieldsMap() {
+      Map<String, String> columnsToFieldsMap = new HashMap<>();
+      columnsToFieldsMap.put("id", "id");
+      columnsToFieldsMap.put("name", "name");
+      columnsToFieldsMap.put("price", "price");
+      columnsToFieldsMap.put("quantity", "quantity");
+      columnsToFieldsMap.put("description", "description");
+      columnsToFieldsMap.put("category", "category");
+      return columnsToFieldsMap;
+    }
+  }
 
   @Override
   public List<Item> findAll() throws SQLException {
@@ -27,8 +49,7 @@ public class ItemDaoImpl implements ItemDao {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
 
-      ResultSetHandler<List<Item>> itemsResult = new BeanListHandler<>(Item.class);
-      return run.query(conn, "SELECT * FROM items", itemsResult);
+      return run.query(conn, "SELECT * FROM items", itemHandler);
     } finally {
       closeConnection(conn, optionalConn);
     }
@@ -46,8 +67,7 @@ public class ItemDaoImpl implements ItemDao {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
 
-      ResultSetHandler<List<Item>> itemsResult = new BeanListHandler<>(Item.class);
-      List<Item> items = run.query(conn, "SELECT * FROM items WHERE id = ?", itemsResult, id);
+      List<Item> items = run.query(conn, "SELECT * FROM items WHERE id = ?", itemHandler, id);
       return items.size() == 0 ? Optional.empty() : Optional.of(items.get(0));
     } finally {
       closeConnection(conn, optionalConn);
