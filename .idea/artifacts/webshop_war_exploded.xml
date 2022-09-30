@@ -18,6 +18,7 @@
           <element id="library" level="project" name="Maven: org.checkerframework:checker-qual:3.5.0" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-jdbc:9.0.67" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-juli:9.0.67" />
+          <element id="library" level="project" name="Maven: commons-dbutils:commons-dbutils:1.7" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.24" />
         </element>
       </element>
