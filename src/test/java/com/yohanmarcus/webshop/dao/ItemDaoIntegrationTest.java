@@ -22,7 +22,7 @@ class ItemDaoIntegrationTest extends IntegrationTest {
 
   @Test
   void testItemDaoCreate_savesNewItem() throws SQLException {
-    Item item = Item.of(null, "test-item", 10, 10, "hello", "cat");
+    Item item = generateNewItem();
     itemDao.create(item);
     Item gotItem = itemDao.findAll().get(0);
     assertEquals(item.getName(), gotItem.getName());
@@ -34,7 +34,7 @@ class ItemDaoIntegrationTest extends IntegrationTest {
 
   @Test
   void testItemDaoUpdate_updatesExistingItem() throws SQLException {
-    Item item = Item.of(null, "test-item", 10, 10, "hello", "cat");
+    Item item = generateNewItem();
     itemDao.create(item);
     Item gotItem = itemDao.findAll().get(0);
     gotItem.setCategory("bruv");
@@ -45,11 +45,15 @@ class ItemDaoIntegrationTest extends IntegrationTest {
 
   @Test
   void testItemDaoRemove_deletesItem() throws SQLException {
-    Item item = Item.of(null, "test-item", 10, 10, "hello", "cat");
+    Item item = generateNewItem();
     itemDao.create(item);
     Item gotItem = itemDao.findAll().get(0);
     itemDao.removeById(gotItem.getId());
     Optional<Item> gotItem2 = itemDao.findById(gotItem.getId());
     assertTrue(gotItem2.isEmpty());
+  }
+
+  private Item generateNewItem() {
+    return Item.of(null, "test-item", 10, 10, "hello", "cat");
   }
 }

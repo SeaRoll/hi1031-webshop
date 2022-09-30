@@ -22,10 +22,16 @@ public class DatabaseConfig {
 
   public DatabaseConfig() {}
 
+  /**
+   * Override current URL. NOTE: Used if tests are used.
+   *
+   * @param URL overriding url
+   */
   public static void setURL(String URL) {
     DatabaseConfig.URL = URL;
   }
 
+  /** Build a data source */
   private static void buildDataSource() {
     PoolProperties p = new PoolProperties();
     p.setUrl(URL);
@@ -49,10 +55,24 @@ public class DatabaseConfig {
     return dataSource;
   }
 
+  /**
+   * Gets connection from optional connection or from the datasource
+   *
+   * @param optionalConn optional connection
+   * @return connection
+   * @throws SQLException sql error
+   */
   public static Connection getConnection(Connection optionalConn) throws SQLException {
     return optionalConn == null ? getDataSource().getConnection() : optionalConn;
   }
 
+  /**
+   * Closes connection if the optional connection is null
+   *
+   * @param conn connection
+   * @param optionalConn optional connection
+   * @throws SQLException sql error
+   */
   public static void closeConnection(Connection conn, Connection optionalConn) throws SQLException {
     if (optionalConn == null) {
       assert conn != null;
