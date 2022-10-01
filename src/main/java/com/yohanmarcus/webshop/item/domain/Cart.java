@@ -25,11 +25,14 @@ public class Cart {
       return;
     }
     existingItem.increaseQuantity();
-    cartItems.put(item.getId(), item);
+    cartItems.put(item.getId(), existingItem);
   }
 
   public void removeFromCart(Item item) {
     Item existingItem = cartItems.get(item.getId());
+
+    if (existingItem == null) return;
+
     existingItem.decreaseQuantity();
     if (existingItem.getQuantity() < 1) {
       cartItems.remove(item.getId());
