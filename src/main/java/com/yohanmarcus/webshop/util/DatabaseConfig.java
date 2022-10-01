@@ -74,8 +74,7 @@ public class DatabaseConfig {
    * @throws SQLException sql error
    */
   public static void closeConnection(Connection conn, Connection optionalConn) throws SQLException {
-    if (optionalConn == null) {
-      assert conn != null;
+    if (optionalConn == null && conn != null) {
       conn.close();
     }
   }

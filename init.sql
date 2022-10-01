@@ -15,7 +15,8 @@ create table if not exists users
 (
     id       serial primary key,
     username varchar(255) not null,
-    password varchar(255) not null
+    password varchar(255) not null,
+    role     varchar(255) not null
 );
 
 -- Create a table if not exists a order table with (id, user_id, status) fields
@@ -38,8 +39,8 @@ create table if not exists order_items
 );
 
 -- create an superadmin user
-insert into users (username, password)
-values ('superadmin', 'superadmin');
+insert into users (username, password, role)
+values ('superadmin', 'superadmin', 'admin');
 
 -- some old table, ignore this
 create table T_SOMETABLE
