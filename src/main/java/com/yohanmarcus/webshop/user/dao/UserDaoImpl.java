@@ -86,10 +86,10 @@ public class UserDaoImpl implements UserDao {
       QueryRunner run = new QueryRunner();
       run.update(
           conn,
-          "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+          "INSERT INTO users (username, password, role) VALUES (?, ?, CAST(? AS user_role))",
           item.getUsername(),
           item.getPassword(),
-          item.getRole());
+          item.getRole().toString());
     } finally {
       closeConnection(conn, optionalConn);
     }
@@ -108,10 +108,10 @@ public class UserDaoImpl implements UserDao {
       QueryRunner run = new QueryRunner();
       run.update(
           conn,
-          "UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?",
+          "UPDATE users SET username = ?, password = ?, role = CAST(? AS user_role) WHERE id = ?",
           item.getUsername(),
           item.getPassword(),
-          item.getRole(),
+          item.getRole().toString(),
           item.getId());
     } finally {
       closeConnection(conn, optionalConn);

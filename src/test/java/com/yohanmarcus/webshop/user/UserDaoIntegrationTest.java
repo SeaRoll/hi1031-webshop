@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserDaoIntegrationTest extends IntegrationTest {
 
-  private UserDao userDao = new UserDaoImpl();
+  private final UserDao userDao = new UserDaoImpl();
 
   @BeforeEach
   void beforeEach() throws SQLException {
@@ -49,11 +49,11 @@ class UserDaoIntegrationTest extends IntegrationTest {
     gotUser.setRole(UserRole.USER);
     userDao.update(gotUser);
     gotUser = userDao.findByUsername(user.getUsername()).get();
-    assertEquals("user", gotUser.getRole());
+    assertEquals(UserRole.USER, gotUser.getRole());
   }
 
   @Test
-  void testItemDaoRemove_deletesItem() throws SQLException {
+  void testUserDaoRemove_deletesItem() throws SQLException {
     User user = generateUser();
     userDao.create(user);
     User gotUser = userDao.findByUsername(user.getUsername()).get();

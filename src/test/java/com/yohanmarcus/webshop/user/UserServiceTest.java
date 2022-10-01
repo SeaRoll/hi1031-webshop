@@ -131,7 +131,7 @@ class UserServiceTest {
 
     assertEquals(1, userDto.id());
     assertEquals("validUser", userDto.username());
-    assertEquals("user", userDto.role());
+    assertEquals(UserRole.USER, userDto.role());
 
     verify(tm).close();
   }
