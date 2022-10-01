@@ -31,7 +31,8 @@ public class Cart {
   public void removeFromCart(Item item) {
     Item existingItem = cartItems.get(item.getId());
 
-    if (existingItem == null) return;
+    if (existingItem == null)
+      return;
 
     existingItem.decreaseQuantity();
     if (existingItem.getQuantity() < 1) {
