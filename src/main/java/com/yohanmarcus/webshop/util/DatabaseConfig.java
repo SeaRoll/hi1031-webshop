@@ -20,8 +20,6 @@ public class DatabaseConfig {
   private static final String DATABASE_PASSWORD = "mysecretpassword";
   private static DataSource dataSource = null;
 
-  public DatabaseConfig() {}
-
   /**
    * Override current URL. NOTE: Used if tests are used.
    *
@@ -74,8 +72,7 @@ public class DatabaseConfig {
    * @throws SQLException sql error
    */
   public static void closeConnection(Connection conn, Connection optionalConn) throws SQLException {
-    if (optionalConn == null) {
-      assert conn != null;
+    if (optionalConn == null && conn != null) {
       conn.close();
     }
   }

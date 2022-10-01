@@ -1,15 +1,11 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.dao;
 
-import org.apache.commons.dbutils.BasicRowProcessor;
-import org.apache.commons.dbutils.BeanProcessor;
+import com.yohanmarcus.webshop.item.domain.Item;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.yohanmarcus.webshop.util.DatabaseConfig.closeConnection;
@@ -18,23 +14,6 @@ import static com.yohanmarcus.webshop.util.DatabaseConfig.getConnection;
 public class ItemDaoImpl implements ItemDao {
 
   private final ItemHandler itemHandler = new ItemHandler();
-
-  private static class ItemHandler extends BeanListHandler<Item> {
-    public ItemHandler() {
-      super(Item.class, new BasicRowProcessor(new BeanProcessor(getColumnsToFieldsMap())));
-    }
-
-    private static Map<String, String> getColumnsToFieldsMap() {
-      Map<String, String> columnsToFieldsMap = new HashMap<>();
-      columnsToFieldsMap.put("id", "id");
-      columnsToFieldsMap.put("name", "name");
-      columnsToFieldsMap.put("price", "price");
-      columnsToFieldsMap.put("quantity", "quantity");
-      columnsToFieldsMap.put("description", "description");
-      columnsToFieldsMap.put("category", "category");
-      return columnsToFieldsMap;
-    }
-  }
 
   @Override
   public List<Item> findAll() throws SQLException {

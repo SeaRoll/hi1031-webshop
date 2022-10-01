@@ -1,13 +1,11 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Builder(toBuilder = true)
 @AllArgsConstructor(staticName = "of")
 public class Item {
   private Integer id;
@@ -16,4 +14,12 @@ public class Item {
   private Integer quantity;
   private String description;
   private String category;
+
+  public void decreaseQuantity() {
+    quantity--;
+  }
+
+  public void increaseQuantity() {
+    quantity++;
+  }
 }

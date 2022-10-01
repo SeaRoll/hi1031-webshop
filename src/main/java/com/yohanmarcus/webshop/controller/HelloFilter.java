@@ -2,7 +2,6 @@ package com.yohanmarcus.webshop.controller;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -31,7 +30,7 @@ public class HelloFilter implements Filter {
       return;
     }
 
-    if (session.getAttribute("hello") == null) {
+    /*if (session.getAttribute("hello") == null) {
       System.out.println("This was null! Not using redirect");
       session.setAttribute("hello", "hello");
     } else {
@@ -39,7 +38,7 @@ public class HelloFilter implements Filter {
       RequestDispatcher dispatcher = httpReq.getRequestDispatcher(BRUV_JSP);
       dispatcher.forward(httpReq, httpResp);
       return;
-    }
+    }*/
 
     filterChain.doFilter(servletRequest, servletResponse);
   }

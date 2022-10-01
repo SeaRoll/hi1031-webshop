@@ -13,7 +13,3 @@ insert into items (name, price, quantity, description, category)
 values ('Mobile', 2000, 10, 'A Mobile', 'electronic');
 insert into items (name, price, quantity, description, category)
 values ('Tablet', 3000, 10, 'A Tablet', 'electronic');
-
--- create an superadmin user
-insert into users (username, password)
-values ('superadmin', 'superadmin');
