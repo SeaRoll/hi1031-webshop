@@ -18,6 +18,23 @@ public interface UserService {
   List<UserDto> findAll() throws SQLException;
 
   /**
+   * Update a user. If a field should not be updated, use the same values as the old one in the dto,
+   * otherwise it will be overwritten by this function.
+   *
+   * @param userToUpdate dto of user to update
+   * @throws SQLException sql error
+   */
+  void updateUser(UserDto userToUpdate) throws SQLException;
+
+  /**
+   * Removes a user by id.
+   *
+   * @param id id of user to remove
+   * @throws SQLException sql error
+   */
+  void removeUser(Integer id) throws SQLException;
+
+  /**
    * Register an user
    *
    * @param form form to register user with

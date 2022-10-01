@@ -43,10 +43,10 @@ class UserDaoIntegrationTest extends IntegrationTest {
   void testUserDaoUpdate_updatesExistingItem() throws SQLException {
     User user = generateUser();
     userDao.create(user);
-    User gotUser = userDao.getByUsername(user.getUsername()).get();
+    User gotUser = userDao.findByUsername(user.getUsername()).get();
     gotUser.setRole("user");
     userDao.update(gotUser);
-    gotUser = userDao.getByUsername(user.getUsername()).get();
+    gotUser = userDao.findByUsername(user.getUsername()).get();
     assertEquals("user", gotUser.getRole());
   }
 
@@ -54,7 +54,7 @@ class UserDaoIntegrationTest extends IntegrationTest {
   void testItemDaoRemove_deletesItem() throws SQLException {
     User user = generateUser();
     userDao.create(user);
-    User gotUser = userDao.getByUsername(user.getUsername()).get();
+    User gotUser = userDao.findByUsername(user.getUsername()).get();
 
     userDao.removeById(gotUser.getId());
     Optional<User> gotUser2 = userDao.findById(gotUser.getId());

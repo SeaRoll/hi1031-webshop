@@ -8,7 +8,23 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public interface UserDao extends Dao<User, Integer> {
-  Optional<User> getByUsername(String username) throws SQLException;
 
-  Optional<User> getByUsername(String username, Connection optionalConn) throws SQLException;
+  /**
+   * Get user by username
+   *
+   * @param username username to find
+   * @return (maybe) found user
+   * @throws SQLException sql error
+   */
+  Optional<User> findByUsername(String username) throws SQLException;
+
+  /**
+   * Get by username inside a transaction
+   *
+   * @param username username to find
+   * @param optionalConn transaction connection
+   * @return (maybe) found user
+   * @throws SQLException sql error
+   */
+  Optional<User> findByUsername(String username, Connection optionalConn) throws SQLException;
 }

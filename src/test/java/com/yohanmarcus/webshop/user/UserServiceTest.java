@@ -3,6 +3,7 @@ package com.yohanmarcus.webshop.user;
 import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.dto.UserFormDto;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
@@ -10,8 +11,12 @@ import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,6 +31,10 @@ class UserServiceTest {
   private final UserDao mockDao = mock(UserDao.class);
   private final UserService userService = new UserServiceImpl(mockDao, mockTM);
 
+  private User generateRandomUser() {
+    return User.of(null, UUID.randomUUID().toString(), UUID.randomUUID().toString(), "admin");
+  }
+
   @Test
   void testRegisterUser_invalidFormThrows() {
     UserFormDto registerForm = new UserFormDto("as", "noteng");
@@ -34,6 +43,8 @@ class UserServiceTest {
     when(mockTM.begin()).thenReturn(tm);
 
     assertThrows(InvalidFormException.class, () -> userService.registerUser(registerForm));
+
+    verify(tm).close();
   }
 
   @Test
@@ -42,10 +53,12 @@ class UserServiceTest {
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
-    when(mockDao.getByUsername(eq("validUser"), any()))
+    when(mockDao.findByUsername(eq("validUser"), any()))
         .thenReturn(Optional.of(User.of(1, "validUser", "password", "user")));
 
     assertThrows(InvalidFormException.class, () -> userService.registerUser(registerForm));
+
+    verify(tm).close();
   }
 
   @Test
@@ -54,11 +67,12 @@ class UserServiceTest {
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
-    when(mockDao.getByUsername(eq("validUser"), any())).thenReturn(Optional.empty());
+    when(mockDao.findByUsername(eq("validUser"), any())).thenReturn(Optional.empty());
 
     userService.registerUser(registerForm);
 
     verify(tm).commit();
+    verify(tm).close();
   }
 
   @Test
@@ -69,6 +83,8 @@ class UserServiceTest {
     when(mockTM.begin()).thenReturn(tm);
 
     assertThrows(InvalidFormException.class, () -> userService.registerUser(registerForm));
+
+    verify(tm).close();
   }
 
   @Test
@@ -77,9 +93,25 @@ class UserServiceTest {
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
-    when(mockDao.getByUsername(eq("validUser"), any())).thenReturn(Optional.empty());
+    when(mockDao.findByUsername(eq("validUser"), any())).thenReturn(Optional.empty());
 
     assertThrows(InvalidFormException.class, () -> userService.loginUser(loginForm));
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testLoginUser_invalidPasswordThrows() throws SQLException {
+    UserFormDto loginForm = new UserFormDto("validUser", "validPassword");
+
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findByUsername(eq("validUser"), any()))
+        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword2", "user")));
+
+    assertThrows(InvalidFormException.class, () -> userService.loginUser(loginForm));
+
+    verify(tm).close();
   }
 
   @Test
@@ -88,7 +120,7 @@ class UserServiceTest {
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
-    when(mockDao.getByUsername(eq("validUser"), any()))
+    when(mockDao.findByUsername(eq("validUser"), any()))
         .thenReturn(Optional.of(User.of(1, "validUser", "validPassword", "user")));
 
     var userDto = userService.loginUser(loginForm);
@@ -98,5 +130,89 @@ class UserServiceTest {
     assertEquals(1, userDto.id());
     assertEquals("validUser", userDto.username());
     assertEquals("user", userDto.role());
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_throwsOnInvalid() throws SQLException {
+    UserDto invalidForm = new UserDto(1, "", "");
+
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+
+    assertThrows(InvalidFormException.class, () -> userService.updateUser(invalidForm));
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_throwsOnInvalidId() throws SQLException {
+    UserDto invalidForm = new UserDto(1, "validUsername", "validRole");
+
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findById(eq(1), any())).thenReturn(Optional.empty());
+
+    Exception ex =
+        assertThrows(InvalidFormException.class, () -> userService.updateUser(invalidForm));
+    System.out.println(ex.getMessage());
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_throwsOnNonUniqueUsername() throws SQLException {
+    UserDto invalidForm = new UserDto(1, "validUsername", "validRole");
+
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findById(eq(1), any()))
+        .thenReturn(Optional.of(User.of(1, "validUsername2", "validPassword", "validRole")));
+    when(mockDao.findByUsername(eq("validUsername"), any()))
+        .thenReturn(Optional.of(User.of(2, "validUsername", "validPassword", "validRole")));
+
+    Exception ex =
+        assertThrows(InvalidFormException.class, () -> userService.updateUser(invalidForm));
+    System.out.println(ex.getMessage());
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_savesOnValid() throws SQLException {
+    UserDto validForm = new UserDto(1, "validUsername", "validRole");
+
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findById(eq(1), any()))
+        .thenReturn(Optional.of(User.of(1, "validUsername2", "validPassword", "validRole")));
+    when(mockDao.findByUsername(eq("validUsername"), any())).thenReturn(Optional.empty());
+
+    userService.updateUser(validForm);
+
+    verify(tm).commit();
+    verify(tm).close();
+  }
+
+  @Test
+  void testFindAllUsers_returnsDto() throws SQLException {
+    List<User> users = new ArrayList<>();
+    for (int i = 0; i < 100; i++) users.add(generateRandomUser());
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findAll()).thenReturn(users);
+
+    List<UserDto> userDtos = userService.findAll();
+
+    for (int i = 0; i < 100; i++) {
+      UserDto dto = UserDto.toDto(users.get(i));
+      assertEquals(userDtos.get(i), dto);
+    }
+  }
+
+  @Test
+  void testRemoveUser_callsDao() throws SQLException {
+    assertDoesNotThrow(() -> userService.removeUser(1));
   }
 }

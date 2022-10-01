@@ -16,12 +16,12 @@ public class UserDaoImpl implements UserDao {
   private final UserHandler userHandler = new UserHandler();
 
   @Override
-  public Optional<User> getByUsername(String username) throws SQLException {
-    return getByUsername(username, null);
+  public Optional<User> findByUsername(String username) throws SQLException {
+    return findByUsername(username, null);
   }
 
   @Override
-  public Optional<User> getByUsername(String username, Connection optionalConn)
+  public Optional<User> findByUsername(String username, Connection optionalConn)
       throws SQLException {
     Connection conn = null;
     try {
