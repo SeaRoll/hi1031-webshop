@@ -6,11 +6,13 @@ import java.sql.SQLException;
 /** Transaction manager for a connection. provides abstraction to connection management. */
 public class TransactionManagerImpl implements TransactionManager {
 
-  private final Connection conn;
+  private Connection conn;
   private boolean committed;
 
+  public TransactionManagerImpl() {}
+
   /** Begin a transaction */
-  private TransactionManagerImpl() {
+  private void startTransaction() {
     committed = false;
     try {
       conn = DatabaseConfig.getDataSource().getConnection();
@@ -22,7 +24,9 @@ public class TransactionManagerImpl implements TransactionManager {
   }
 
   public TransactionManager begin() {
-    return new TransactionManagerImpl();
+    TransactionManagerImpl newTransactionManager = new TransactionManagerImpl();
+    newTransactionManager.startTransaction();
+    return newTransactionManager;
   }
 
   /**

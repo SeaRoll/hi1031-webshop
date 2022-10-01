@@ -1,5 +1,6 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.dao;
 
+import com.yohanmarcus.webshop.item.domain.Item;
 import org.apache.commons.dbutils.QueryRunner;
 
 import java.sql.Connection;

@@ -3,6 +3,7 @@ package com.yohanmarcus.webshop.user.service;
 import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.dto.UserFormDto;
 import com.yohanmarcus.webshop.util.TransactionManager;
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
       if (userFromUsername.isPresent()) throw new InvalidFormException("Username is not unique");
 
       // register user
-      User newUser = User.of(null, form.username(), form.password(), "user");
+      User newUser = User.of(null, form.username(), form.password(), UserRole.USER);
       userDao.create(newUser, tm.getConn());
 
       // commit

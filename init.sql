@@ -10,13 +10,16 @@ create table if not exists items
     category    varchar(255) not null
 );
 
+-- Create a user role enum (User, Staff, Admin) fields
+create type user_role as enum ('USER', 'STAFF', 'ADMIN');
+
 -- Create a table if not exists a user table with (id, username, password) fields
 create table if not exists users
 (
     id       serial primary key,
     username varchar(255) not null,
     password varchar(255) not null,
-    role     varchar(255) not null
+    role     user_role not null
 );
 
 -- Create a table if not exists a order table with (id, user_id, status) fields
@@ -40,13 +43,4 @@ create table if not exists order_items
 
 -- create an superadmin user
 insert into users (username, password, role)
-values ('superadmin', 'superadmin', 'admin');
-
--- some old table, ignore this
-create table T_SOMETABLE
-(
-    id int
-);
-
-insert into T_SOMETABLE(id)
-VALUES (1);
+values ('superadmin', 'superadmin', 'ADMIN');

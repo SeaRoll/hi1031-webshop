@@ -3,6 +3,7 @@ package com.yohanmarcus.webshop.user;
 import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.dto.UserFormDto;
 import com.yohanmarcus.webshop.user.service.UserService;
@@ -32,7 +33,8 @@ class UserServiceTest {
   private final UserService userService = new UserServiceImpl(mockDao, mockTM);
 
   private User generateRandomUser() {
-    return User.of(null, UUID.randomUUID().toString(), UUID.randomUUID().toString(), "admin");
+    return User.of(
+        null, UUID.randomUUID().toString(), UUID.randomUUID().toString(), UserRole.ADMIN);
   }
 
   @Test
@@ -54,7 +56,7 @@ class UserServiceTest {
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findByUsername(eq("validUser"), any()))
-        .thenReturn(Optional.of(User.of(1, "validUser", "password", "user")));
+        .thenReturn(Optional.of(User.of(1, "validUser", "password", UserRole.USER)));
 
     assertThrows(InvalidFormException.class, () -> userService.registerUser(registerForm));
 
@@ -107,7 +109,7 @@ class UserServiceTest {
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findByUsername(eq("validUser"), any()))
-        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword2", "user")));
+        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword2", UserRole.ADMIN)));
 
     assertThrows(InvalidFormException.class, () -> userService.loginUser(loginForm));
 
@@ -121,7 +123,7 @@ class UserServiceTest {
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findByUsername(eq("validUser"), any()))
-        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword", "user")));
+        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword", UserRole.USER)));
 
     var userDto = userService.loginUser(loginForm);
 
@@ -136,7 +138,7 @@ class UserServiceTest {
 
   @Test
   void testUpdateUser_throwsOnInvalid() throws SQLException {
-    UserDto invalidForm = new UserDto(1, "", "");
+    UserDto invalidForm = new UserDto(1, "", UserRole.USER);
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
@@ -148,7 +150,7 @@ class UserServiceTest {
 
   @Test
   void testUpdateUser_throwsOnInvalidId() throws SQLException {
-    UserDto invalidForm = new UserDto(1, "validUsername", "validRole");
+    UserDto invalidForm = new UserDto(1, "validUsername", UserRole.USER);
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
@@ -163,14 +165,14 @@ class UserServiceTest {
 
   @Test
   void testUpdateUser_throwsOnNonUniqueUsername() throws SQLException {
-    UserDto invalidForm = new UserDto(1, "validUsername", "validRole");
+    UserDto invalidForm = new UserDto(1, "validUsername", UserRole.USER);
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findById(eq(1), any()))
-        .thenReturn(Optional.of(User.of(1, "validUsername2", "validPassword", "validRole")));
+        .thenReturn(Optional.of(User.of(1, "validUsername2", "validPassword", UserRole.USER)));
     when(mockDao.findByUsername(eq("validUsername"), any()))
-        .thenReturn(Optional.of(User.of(2, "validUsername", "validPassword", "validRole")));
+        .thenReturn(Optional.of(User.of(2, "validUsername", "validPassword", UserRole.USER)));
 
     Exception ex =
         assertThrows(InvalidFormException.class, () -> userService.updateUser(invalidForm));
@@ -181,12 +183,12 @@ class UserServiceTest {
 
   @Test
   void testUpdateUser_savesOnValid() throws SQLException {
-    UserDto validForm = new UserDto(1, "validUsername", "validRole");
+    UserDto validForm = new UserDto(1, "validUsername", UserRole.USER);
 
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findById(eq(1), any()))
-        .thenReturn(Optional.of(User.of(1, "validUsername2", "validPassword", "validRole")));
+        .thenReturn(Optional.of(User.of(1, "validUsername2", "validPassword", UserRole.USER)));
     when(mockDao.findByUsername(eq("validUsername"), any())).thenReturn(Optional.empty());
 
     userService.updateUser(validForm);

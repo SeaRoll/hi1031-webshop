@@ -7,8 +7,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ./init.sql:/docker-entrypoint-initdb.d/seed.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/10-init.sql
+      - ./seed.sql:/docker-entrypoint-initdb.d/20-init.sql
     environment:
       POSTGRES_PASSWORD: mysecretpassword
   app:

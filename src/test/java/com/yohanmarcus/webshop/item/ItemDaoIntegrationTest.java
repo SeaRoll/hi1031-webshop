@@ -1,5 +1,8 @@
 package com.yohanmarcus.webshop.item;
 
+import com.yohanmarcus.webshop.item.dao.ItemDao;
+import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
+import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.util.IntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
