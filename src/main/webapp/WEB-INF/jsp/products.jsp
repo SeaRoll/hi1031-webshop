@@ -1,6 +1,5 @@
-<%@ page import="com.yohanmarcus.webshop.item.dto.ItemDto" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.yohanmarcus.webshop.item.domain.Item" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,7 +8,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <%
-    List<ItemDto> itemDtoList = (List<ItemDto>) request.getAttribute("items");
+    List<Item> itemList = (List<Item>) request.getAttribute("items");
 %>
 
 <main>
@@ -28,26 +27,26 @@
             </thead>
             <tbody>
             <%
-                for (ItemDto itemDto : itemDtoList) {
+                for (Item itemDto : itemList) {
             %>
             <tr>
                 <td>
-                    <%= itemDto.name() %>
+                    <%= itemDto.getName() %>
                 </td>
                 <td>
-                    $<%= itemDto.price() %>
+                    $<%= itemDto.getPrice() %>
                 </td>
                 <td>
-                    <%= itemDto.quantity() %>
+                    <%= itemDto.getQuantity() %>
                 </td>
                 <td>
-                    <%= itemDto.description() %>
+                    <%= itemDto.getDescription() %>
                 </td>
                 <td>
-                    <%= itemDto.category() %>
+                    <%= itemDto.getCategory() %>
                 </td>
                 <td>
-                    <button type="submit" name="itemId" value="<%= itemDto.id() %>">Add to cart</button>
+                    <button type="submit" name="itemId" value="<%= itemDto.getId() %>">Add to cart</button>
                 </td>
             </tr>
             <%

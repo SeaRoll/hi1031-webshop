@@ -1,12 +1,11 @@
 package com.yohanmarcus.webshop.item.service;
 
-import com.yohanmarcus.webshop.item.dto.ItemDto;
+import com.yohanmarcus.webshop.item.domain.Cart;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public interface CartService {
-  List<ItemDto> addToCart(Integer clickedId, List<ItemDto> currentList) throws SQLException;
+  Cart addToCart(Integer clickedId, Cart cart) throws SQLException;
 
-  List<ItemDto> removeFromCart(Integer clickedId, List<ItemDto> currentList);
+  Cart removeFromCart(Integer clickedId, Cart cart) throws SQLException;
 }

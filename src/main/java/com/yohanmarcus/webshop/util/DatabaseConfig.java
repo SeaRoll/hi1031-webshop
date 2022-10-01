@@ -20,8 +20,6 @@ public class DatabaseConfig {
   private static final String DATABASE_PASSWORD = "mysecretpassword";
   private static DataSource dataSource = null;
 
-  public DatabaseConfig() {}
-
   /**
    * Override current URL. NOTE: Used if tests are used.
    *

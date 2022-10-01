@@ -1,7 +1,8 @@
 package com.yohanmarcus.webshop.controller;
 
 import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
-import com.yohanmarcus.webshop.item.dto.ItemDto;
+import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.service.CartService;
 import com.yohanmarcus.webshop.item.service.CartServiceImpl;
 import com.yohanmarcus.webshop.item.service.ItemService;
@@ -40,8 +41,8 @@ public class ProductController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
-      List<ItemDto> itemDtoList = itemService.findAll();
-      req.setAttribute("items", itemDtoList);
+      List<Item> itemList = itemService.findAll();
+      req.setAttribute("items", itemList);
       processRequest(req, resp);
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -52,9 +53,9 @@ public class ProductController extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
       Integer clickedId = Integer.parseInt(req.getParameter("itemId"));
-      List<ItemDto> items = (List<ItemDto>) req.getSession().getAttribute("cart");
-      List<ItemDto> newItems = cartService.addToCart(clickedId, items);
-      req.getSession().setAttribute("cart", newItems);
+      Cart cart = (Cart) req.getSession().getAttribute("cart");
+      cart = cartService.addToCart(clickedId, cart);
+      req.getSession().setAttribute("cart", cart);
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {

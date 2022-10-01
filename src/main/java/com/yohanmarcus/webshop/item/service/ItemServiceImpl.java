@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.item.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.dto.ItemDto;
+import com.yohanmarcus.webshop.item.domain.Item;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,13 +14,12 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<ItemDto> findAll() throws SQLException {
-    return itemDao.findAll().stream().map(ItemDto::toDto).toList();
+  public List<Item> findAll() throws SQLException {
+    return itemDao.findAll();
   }
 
   @Override
-  public ItemDto findById(Integer id) throws SQLException {
-    return ItemDto.toDto(
-        itemDao.findById(id).orElseThrow(() -> new IllegalStateException("Does not exist!")));
+  public Item findById(Integer id) throws SQLException {
+    return itemDao.findById(id).orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
 }

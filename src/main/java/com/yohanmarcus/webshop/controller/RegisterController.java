@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller;
 
 import com.yohanmarcus.webshop.user.dao.UserDaoImpl;
-import com.yohanmarcus.webshop.user.dto.UserFormDto;
+import com.yohanmarcus.webshop.user.dto.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
 import com.yohanmarcus.webshop.util.TransactionManagerImpl;
@@ -43,9 +43,8 @@ public class RegisterController extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
     try {
-      UserFormDto userFormDto =
-          new UserFormDto(req.getParameter("username"), req.getParameter("password"));
-      userService.registerUser(userFormDto);
+      UserForm userForm = new UserForm(req.getParameter("username"), req.getParameter("password"));
+      userService.registerUser(userForm);
       res.sendRedirect(req.getContextPath() + "/login");
     } catch (Exception e) {
       e.printStackTrace();

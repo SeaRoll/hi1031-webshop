@@ -4,13 +4,10 @@ import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
-import com.yohanmarcus.webshop.user.dto.UserDto;
-import com.yohanmarcus.webshop.user.dto.UserFormDto;
+import com.yohanmarcus.webshop.user.dto.UserForm;
 import com.yohanmarcus.webshop.util.TransactionManager;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -23,45 +20,7 @@ public class UserServiceImpl implements UserService {
     this.transactionManager = transactionManager;
   }
 
-  public List<UserDto> findAll() throws SQLException {
-    return userDao.findAll().stream().map(UserDto::toDto).toList();
-  }
-
-  public void removeUser(Integer id) throws SQLException {
-    userDao.removeById(id);
-  }
-
-  public void updateUser(UserDto userToUpdate) throws SQLException {
-    TransactionManager tm = transactionManager.begin();
-    try {
-      // check form validation
-      if (!userToUpdate.isValid()) throw new InvalidFormException("Form is invalid");
-
-      // check that user exists
-      User user =
-          userDao
-              .findById(userToUpdate.id(), tm.getConn())
-              .orElseThrow(() -> new InvalidFormException("User does not exist"));
-
-      // check that username is unique
-      Optional<User> userFromUsername =
-          userDao.findByUsername(userToUpdate.username(), tm.getConn());
-      if (userFromUsername.isPresent()
-          && !Objects.equals(userFromUsername.get().getId(), user.getId()))
-        throw new InvalidFormException("Username is not unique");
-
-      // set new values
-      user.setUsername(userToUpdate.username());
-      user.setRole(userToUpdate.role());
-
-      // commit
-      tm.commit();
-    } finally {
-      tm.close();
-    }
-  }
-
-  public void registerUser(UserFormDto form) throws SQLException {
+  public void registerUser(UserForm form) throws SQLException {
     TransactionManager tm = transactionManager.begin();
     try {
       // check form validation
@@ -82,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  public UserDto loginUser(UserFormDto form) throws SQLException {
+  public User loginUser(UserForm form) throws SQLException {
     TransactionManager tm = transactionManager.begin();
     try {
       // check form validation
@@ -101,7 +60,7 @@ public class UserServiceImpl implements UserService {
       // commit and return user dto
       tm.commit();
 
-      return UserDto.toDto(foundUser);
+      return foundUser;
     } finally {
       tm.close();
     }

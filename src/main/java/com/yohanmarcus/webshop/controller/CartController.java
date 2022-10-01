@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller;
 
 import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
-import com.yohanmarcus.webshop.item.dto.ItemDto;
+import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.service.CartService;
 import com.yohanmarcus.webshop.item.service.CartServiceImpl;
 
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.sql.SQLException;
 
 @WebServlet(name = "cartServlet", value = "/cart")
 public class CartController extends HttpServlet {
@@ -37,10 +37,14 @@ public class CartController extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    List<ItemDto> oldItems = (List<ItemDto>) req.getSession().getAttribute("cart");
-    Integer clickedId = Integer.parseInt(req.getParameter("itemId"));
-    List<ItemDto> newItems = cartService.removeFromCart(clickedId, oldItems);
-    req.getSession().setAttribute("cart", newItems);
-    resp.sendRedirect("/cart");
+    try {
+      Cart cart = (Cart) req.getSession().getAttribute("cart");
+      Integer clickedId = Integer.parseInt(req.getParameter("itemId"));
+      cart = cartService.removeFromCart(clickedId, cart);
+      req.getSession().setAttribute("cart", cart);
+      resp.sendRedirect("/cart");
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -14,4 +14,12 @@ public class Item {
   private Integer quantity;
   private String description;
   private String category;
+
+  public void decreaseQuantity() {
+    quantity--;
+  }
+
+  public void increaseQuantity() {
+    quantity++;
+  }
 }

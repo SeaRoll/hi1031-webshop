@@ -1,8 +1,8 @@
 package com.yohanmarcus.webshop.controller;
 
 import com.yohanmarcus.webshop.user.dao.UserDaoImpl;
-import com.yohanmarcus.webshop.user.dto.UserDto;
-import com.yohanmarcus.webshop.user.dto.UserFormDto;
+import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.dto.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
 import com.yohanmarcus.webshop.util.TransactionManagerImpl;
@@ -44,10 +44,9 @@ public class LoginController extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
     try {
-      UserFormDto userFormDto =
-          new UserFormDto(req.getParameter("username"), req.getParameter("password"));
-      UserDto userDto = userService.loginUser(userFormDto);
-      req.getSession().setAttribute("user", userDto);
+      UserForm userForm = new UserForm(req.getParameter("username"), req.getParameter("password"));
+      User user = userService.loginUser(userForm);
+      req.getSession().setAttribute("user", user);
       res.sendRedirect(req.getContextPath() + "/");
     } catch (Exception e) {
       e.printStackTrace();

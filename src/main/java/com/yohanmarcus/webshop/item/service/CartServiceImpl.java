@@ -1,11 +1,10 @@
 package com.yohanmarcus.webshop.item.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.dto.ItemDto;
+import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.domain.Item;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CartServiceImpl implements CartService {
 
@@ -16,20 +15,16 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public List<ItemDto> addToCart(Integer clickedId, List<ItemDto> currentList) throws SQLException {
-    List<ItemDto> items = new ArrayList<>(currentList);
-
-    ItemDto newItem = ItemDto.toDto(itemDao.findById(clickedId).orElseThrow());
-    items.add(newItem);
-    return items;
+  public Cart addToCart(Integer clickedId, Cart cart) throws SQLException {
+    Item newItem = itemDao.findById(clickedId).orElseThrow();
+    cart.addToCart(newItem);
+    return cart;
   }
 
   @Override
-  public List<ItemDto> removeFromCart(Integer clickedId, List<ItemDto> currentList) {
-    List<ItemDto> cartItems = new ArrayList<>(currentList);
-    ItemDto clickedItem =
-        cartItems.stream().filter(itemDto -> itemDto.id().equals(clickedId)).findFirst().get();
-    cartItems.remove(clickedItem);
-    return cartItems;
+  public Cart removeFromCart(Integer clickedId, Cart cart) throws SQLException {
+    Item itemToRemove = itemDao.findById(clickedId).orElseThrow();
+    cart.removeFromCart(itemToRemove);
+    return cart;
   }
 }
