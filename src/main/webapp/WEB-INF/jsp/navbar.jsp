@@ -26,7 +26,6 @@
     <%}%>
 
     <% if (user != null && user.getRole().toString().equals("ADMIN")) { %>
-    <li><a href="#">User - Orders</a></li>
     <li>_______________________________</li>
     <li><a href="#">Admin - Items</a></li>
     <li><a href="#">Admin - Orders</a></li>
