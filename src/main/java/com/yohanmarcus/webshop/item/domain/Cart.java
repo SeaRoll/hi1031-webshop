@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Cart {
-  private final HashMap<Integer, Item> cartItems;
+  private final HashMap<String, Item> cartItems;
 
   public Cart() {
     cartItems = new HashMap<>();
@@ -31,8 +31,7 @@ public class Cart {
   public void removeFromCart(Item item) {
     Item existingItem = cartItems.get(item.getId());
 
-    if (existingItem == null)
-      return;
+    if (existingItem == null) return;
 
     existingItem.decreaseQuantity();
     if (existingItem.getQuantity() < 1) {

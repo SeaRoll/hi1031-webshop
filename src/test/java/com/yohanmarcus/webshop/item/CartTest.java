@@ -13,7 +13,7 @@ class CartTest {
   @Test
   void testAddToCart_createsNewEntry() {
     Cart cart = new Cart();
-    Item itemToInsert = Item.of(1, "test", 3, 5, "", "");
+    Item itemToInsert = Item.of("1", "test", 3, 5, "", "");
     cart.addToCart(itemToInsert);
 
     List<Item> itemList = cart.getCartItems();
@@ -26,7 +26,7 @@ class CartTest {
   @Test
   void testAddToCart_increasesNewEntry() {
     Cart cart = new Cart();
-    Item itemToInsert = Item.of(1, "test", 3, 5, "", "");
+    Item itemToInsert = Item.of("1", "test", 3, 5, "", "");
     cart.addToCart(itemToInsert);
     cart.addToCart(itemToInsert);
 
@@ -40,7 +40,7 @@ class CartTest {
   @Test
   void testRemoveFromCart_decreasesExisting() {
     Cart cart = new Cart();
-    Item itemToInsert = Item.of(1, "test", 3, 5, "", "");
+    Item itemToInsert = Item.of("1", "test", 3, 5, "", "");
     cart.addToCart(itemToInsert);
     cart.addToCart(itemToInsert);
     cart.removeFromCart(itemToInsert);
@@ -54,7 +54,7 @@ class CartTest {
   @Test
   void testRemoveFromCart_removesOnZero() {
     Cart cart = new Cart();
-    Item itemToInsert = Item.of(1, "test", 3, 5, "", "");
+    Item itemToInsert = Item.of("1", "test", 3, 5, "", "");
     cart.addToCart(itemToInsert);
     cart.removeFromCart(itemToInsert);
 
@@ -65,7 +65,7 @@ class CartTest {
   @Test
   void testGetTotal_givesCorrectAmount() {
     Cart cart = new Cart();
-    Item itemToInsert = Item.of(1, "test", 2, 5, "", "");
+    Item itemToInsert = Item.of("1", "test", 2, 5, "", "");
     cart.addToCart(itemToInsert);
     cart.addToCart(itemToInsert);
     cart.addToCart(itemToInsert);

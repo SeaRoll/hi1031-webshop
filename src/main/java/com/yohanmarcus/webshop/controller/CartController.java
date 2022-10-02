@@ -43,7 +43,7 @@ public class CartController extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
       Cart cart = (Cart) req.getSession().getAttribute("cart");
-      Integer clickedId = Integer.parseInt(req.getParameter("itemId"));
+      String clickedId = req.getParameter("itemId");
       cart = cartService.removeFromCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);
       resp.sendRedirect("/cart");

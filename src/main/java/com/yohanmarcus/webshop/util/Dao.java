@@ -51,7 +51,7 @@ public interface Dao<T, V> {
    * @param item item to create
    * @throws SQLException sql error
    */
-  void create(T item) throws SQLException;
+  V create(T item) throws SQLException;
 
   /**
    * Creates a dao item by given dao id with optional external transaction if the `optionalConn` is
@@ -61,7 +61,7 @@ public interface Dao<T, V> {
    * @param optionalConn optional connection
    * @throws SQLException sql error
    */
-  void create(T item, Connection optionalConn) throws SQLException;
+  V create(T item, Connection optionalConn) throws SQLException;
 
   /**
    * Updates a dao item by given dao id without external transaction
@@ -69,7 +69,7 @@ public interface Dao<T, V> {
    * @param item item to update
    * @throws SQLException sql error
    */
-  void update(T item) throws SQLException;
+  T update(T item) throws SQLException;
 
   /**
    * Updates a dao item by given dao id with optional external transaction if the `optionalConn` is
@@ -79,7 +79,7 @@ public interface Dao<T, V> {
    * @param optionalConn optional connection
    * @throws SQLException sql error
    */
-  void update(T item, Connection optionalConn) throws SQLException;
+  T update(T item, Connection optionalConn) throws SQLException;
 
   /**
    * Removes a dao item by given dao id without external transaction
@@ -87,7 +87,7 @@ public interface Dao<T, V> {
    * @param id id of item to delete
    * @throws SQLException sql error
    */
-  void removeById(V id) throws SQLException;
+  V removeById(V id) throws SQLException;
 
   /**
    * Removes a dao item by given dao id with optional external transaction if the `optionalConn` is
@@ -97,7 +97,7 @@ public interface Dao<T, V> {
    * @param optionalConn optional connection
    * @throws SQLException sql error
    */
-  void removeById(V id, Connection optionalConn) throws SQLException;
+  V removeById(V id, Connection optionalConn) throws SQLException;
 
   /**
    * Removes all dao items

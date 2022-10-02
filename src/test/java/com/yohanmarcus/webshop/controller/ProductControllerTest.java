@@ -51,7 +51,7 @@ class ProductControllerTest {
 
     when(session.getAttribute(eq("cart"))).thenReturn(cart);
     when(req.getParameter(eq("itemId"))).thenReturn("1");
-    when(cartService.addToCart(eq(1), eq(cart))).thenReturn(cart);
+    when(cartService.addToCart(eq("1"), eq(cart))).thenReturn(cart);
 
     productController.doPost(req, res);
 

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.yohanmarcus.webshop.util.DatabaseConfig.closeConnection;
 import static com.yohanmarcus.webshop.util.DatabaseConfig.getConnection;
@@ -55,12 +56,12 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public Optional<User> findById(Integer id) throws SQLException {
+  public Optional<User> findById(String id) throws SQLException {
     return findById(id, null);
   }
 
   @Override
-  public Optional<User> findById(Integer id, Connection optionalConn) throws SQLException {
+  public Optional<User> findById(String id, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
@@ -74,34 +75,37 @@ public class UserDaoImpl implements UserDao {
   }
 
   @Override
-  public void create(User item) throws SQLException {
-    create(item, null);
+  public String create(User item) throws SQLException {
+    return create(item, null);
   }
 
   @Override
-  public void create(User item, Connection optionalConn) throws SQLException {
+  public String create(User item, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
+      String newId = UUID.randomUUID().toString();
       run.update(
           conn,
-          "INSERT INTO users (username, password, role) VALUES (?, ?, CAST(? AS user_role))",
+          "INSERT INTO users (id, username, password, role) VALUES (?, ?, ?, CAST(? AS user_role))",
+          newId,
           item.getUsername(),
           item.getPassword(),
           item.getRole().toString());
+      return newId;
     } finally {
       closeConnection(conn, optionalConn);
     }
   }
 
   @Override
-  public void update(User item) throws SQLException {
-    update(item, null);
+  public User update(User item) throws SQLException {
+    return update(item, null);
   }
 
   @Override
-  public void update(User item, Connection optionalConn) throws SQLException {
+  public User update(User item, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
@@ -113,23 +117,25 @@ public class UserDaoImpl implements UserDao {
           item.getPassword(),
           item.getRole().toString(),
           item.getId());
+      return item;
     } finally {
       closeConnection(conn, optionalConn);
     }
   }
 
   @Override
-  public void removeById(Integer id) throws SQLException {
-    removeById(id, null);
+  public String removeById(String id) throws SQLException {
+    return removeById(id, null);
   }
 
   @Override
-  public void removeById(Integer id, Connection optionalConn) throws SQLException {
+  public String removeById(String id, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
       run.update(conn, "DELETE FROM users WHERE id = ?", id);
+      return id;
     } finally {
       closeConnection(conn, optionalConn);
     }

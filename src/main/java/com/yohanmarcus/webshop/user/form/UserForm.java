@@ -1,4 +1,4 @@
-package com.yohanmarcus.webshop.user.dto;
+package com.yohanmarcus.webshop.user.form;
 
 public record UserForm(String username, String password) {
     public boolean isValid() {

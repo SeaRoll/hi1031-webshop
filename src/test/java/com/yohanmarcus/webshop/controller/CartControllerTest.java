@@ -45,7 +45,7 @@ class CartControllerTest {
 
     when(session.getAttribute(eq("cart"))).thenReturn(cart);
     when(req.getParameter(eq("itemId"))).thenReturn("1");
-    when(cartService.removeFromCart(eq(1), eq(cart))).thenReturn(cart);
+    when(cartService.removeFromCart(eq("1"), eq(cart))).thenReturn(cart);
 
     cartController.doPost(req, res);
 
