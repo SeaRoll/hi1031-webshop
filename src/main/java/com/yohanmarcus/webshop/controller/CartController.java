@@ -17,10 +17,14 @@ import java.sql.SQLException;
 @WebServlet(name = "cartServlet", value = "/cart")
 public class CartController extends HttpServlet {
 
-  private CartService cartService;
+  private final CartService cartService;
 
-  public void init() {
+  public CartController() {
     cartService = new CartServiceImpl(new ItemDaoImpl());
+  }
+
+  public CartController(CartService cartService) {
+    this.cartService = cartService;
   }
 
   private void processRequest(HttpServletRequest req, HttpServletResponse res)
