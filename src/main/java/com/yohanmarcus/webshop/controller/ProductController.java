@@ -56,7 +56,7 @@ public class ProductController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
-      Integer clickedId = Integer.parseInt(req.getParameter("itemId"));
+      String clickedId = req.getParameter("itemId");
       Cart cart = (Cart) req.getSession().getAttribute("cart");
       cart = cartService.addToCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);

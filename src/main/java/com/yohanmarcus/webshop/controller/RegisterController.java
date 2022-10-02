@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller;
 
 import com.yohanmarcus.webshop.user.dao.UserDaoImpl;
-import com.yohanmarcus.webshop.user.dto.UserForm;
+import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
 import com.yohanmarcus.webshop.util.TransactionManagerImpl;

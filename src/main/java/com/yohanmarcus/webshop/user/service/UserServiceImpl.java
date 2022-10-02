@@ -4,7 +4,7 @@ import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
-import com.yohanmarcus.webshop.user.dto.UserForm;
+import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.util.TransactionManager;
 
 import java.sql.SQLException;

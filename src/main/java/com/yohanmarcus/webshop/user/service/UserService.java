@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.user.service;
 
 import com.yohanmarcus.webshop.user.domain.User;
-import com.yohanmarcus.webshop.user.dto.UserForm;
+import com.yohanmarcus.webshop.user.form.UserForm;
 
 import java.sql.SQLException;
 

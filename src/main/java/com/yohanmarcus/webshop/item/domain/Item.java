@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 public class Item {
-  private Integer id;
+  private String id;
   private String name;
   private Integer price;
   private Integer quantity;

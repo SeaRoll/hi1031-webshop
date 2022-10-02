@@ -19,7 +19,7 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public Item findById(Integer id) throws SQLException {
+  public Item findById(String id) throws SQLException {
     return itemDao.findById(id).orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
 }

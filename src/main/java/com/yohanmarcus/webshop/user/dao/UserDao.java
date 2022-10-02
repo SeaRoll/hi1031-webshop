@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public interface UserDao extends Dao<User, Integer> {
+public interface UserDao extends Dao<User, String> {
 
   /**
    * Get user by username
