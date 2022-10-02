@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.yohanmarcus.webshop.item.domain.Cart" %>
 <%@ page import="com.yohanmarcus.webshop.item.domain.Item" %>
+<%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,8 +9,10 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
+<jsp:include page="error.jsp"/>
 <%
     Cart cart = (Cart) request.getSession().getAttribute("cart");
+    User user = (User) request.getSession().getAttribute("user");
     List<Item> cartItems = cart.getCartItems();
 %>
 
@@ -61,6 +64,20 @@
     <h4>
         Total: $<%= cart.getTotal() %>
     </h4>
+
+    <%
+        if (user != null) {
+    %>
+    <form method="POST" action="/order">
+        <button type="submit">Order</button>
+    </form>
+    <%
+    } else {
+    %>
+    <p>Login to order items in cart!</p>
+    <%
+        }
+    %>
 </main>
 
 <jsp:include page="footer.jsp"/>
