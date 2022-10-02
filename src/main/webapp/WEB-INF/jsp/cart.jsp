@@ -10,10 +10,6 @@
 <jsp:include page="navbar.jsp"/>
 <%
     Cart cart = (Cart) request.getSession().getAttribute("cart");
-    if (cart == null) {
-        cart = new Cart();
-        request.getSession().setAttribute("cart", cart);
-    }
     List<Item> cartItems = cart.getCartItems();
 %>
 

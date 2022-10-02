@@ -17,10 +17,14 @@ import java.io.IOException;
 @WebServlet(name = "registerServlet", value = "/register")
 public class RegisterController extends HttpServlet {
 
-  private UserService userService;
+  private final UserService userService;
 
-  public void init() {
+  public RegisterController() {
     userService = new UserServiceImpl(new UserDaoImpl(), new TransactionManagerImpl());
+  }
+
+  public RegisterController(UserService userService) {
+    this.userService = userService;
   }
 
   private void processRequest(HttpServletRequest req, HttpServletResponse res)
@@ -45,7 +49,7 @@ public class RegisterController extends HttpServlet {
     try {
       UserForm userForm = new UserForm(req.getParameter("username"), req.getParameter("password"));
       userService.registerUser(userForm);
-      res.sendRedirect(req.getContextPath() + "/login");
+      res.sendRedirect("/login");
     } catch (Exception e) {
       e.printStackTrace();
       req.setAttribute("error", e.getMessage());

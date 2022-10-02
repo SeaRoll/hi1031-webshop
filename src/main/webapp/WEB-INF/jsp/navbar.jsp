@@ -1,16 +1,9 @@
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.yohanmarcus.webshop.item.domain.Cart" %>
-<%@ page import="com.yohanmarcus.webshop.item.domain.Item" %>
 <%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
 <h1>90s Ecommerce</h1>
 <img src="/resources/ia-cat.webp" alt="cat-logo">
 <%
     Cart cart = (Cart) request.getSession().getAttribute("cart");
-    if (cart == null) {
-        cart = new Cart();
-        request.getSession().setAttribute("cart", cart);
-    }
     User user = (User) request.getSession().getAttribute("user");
 %>
 <ul>

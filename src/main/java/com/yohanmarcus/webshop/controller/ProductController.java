@@ -21,11 +21,15 @@ import java.util.List;
 @WebServlet(name = "productServlet", value = "")
 public class ProductController extends HttpServlet {
 
-  private ItemService itemService;
-  private CartService cartService;
+  private final ItemService itemService;
+  private final CartService cartService;
 
-  @Override
-  public void init() {
+  public ProductController(ItemService itemService, CartService cartService) {
+    this.itemService = itemService;
+    this.cartService = cartService;
+  }
+
+  public ProductController() {
     var itemDao = new ItemDaoImpl();
     itemService = new ItemServiceImpl(itemDao);
     cartService = new CartServiceImpl(itemDao);
