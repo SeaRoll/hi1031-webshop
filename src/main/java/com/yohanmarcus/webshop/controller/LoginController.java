@@ -1,12 +1,11 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.user.dao.UserDaoImpl;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
-import com.yohanmarcus.webshop.user.service.UserServiceImpl;
-import com.yohanmarcus.webshop.util.TransactionManagerImpl;
+import lombok.NoArgsConstructor;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,14 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@NoArgsConstructor
 @WebServlet(name = "loginServlet", value = "/login")
 public class LoginController extends HttpServlet {
 
-  private final UserService userService;
-
-  public LoginController() {
-    userService = new UserServiceImpl(new UserDaoImpl(), new TransactionManagerImpl());
-  }
+  @Inject private UserService userService;
 
   public LoginController(UserService userService) {
     this.userService = userService;

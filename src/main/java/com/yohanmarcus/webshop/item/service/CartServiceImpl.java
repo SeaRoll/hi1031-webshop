@@ -4,12 +4,16 @@ import com.yohanmarcus.webshop.item.dao.ItemDao;
 import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.sql.SQLException;
 
+@ApplicationScoped
 public class CartServiceImpl implements CartService {
 
   private final ItemDao itemDao;
 
+  @Inject
   public CartServiceImpl(ItemDao itemDao) {
     this.itemDao = itemDao;
   }

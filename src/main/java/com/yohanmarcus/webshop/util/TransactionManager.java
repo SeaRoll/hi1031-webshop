@@ -4,12 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface TransactionManager {
-  /**
-   * Begin a transaction
-   *
-   * @return a new transaction manager
-   */
-  TransactionManager begin();
 
   /**
    * Commits a transaction

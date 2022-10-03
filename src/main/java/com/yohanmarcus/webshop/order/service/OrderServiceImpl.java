@@ -10,32 +10,37 @@ import com.yohanmarcus.webshop.order.domain.OrderItems;
 import com.yohanmarcus.webshop.order.domain.OrderItemsId;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
 import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
+@ApplicationScoped
 public class OrderServiceImpl implements OrderService {
 
   private final OrderDao orderDao;
   private final OrderItemsDao orderItemsDao;
   private final ItemDao itemDao;
-  private final TransactionManager transactionManager;
+  private final TransactionFactory transactionFactory;
 
+  @Inject
   public OrderServiceImpl(
       OrderDao orderDao,
       OrderItemsDao orderItemsDao,
       ItemDao itemDao,
-      TransactionManager transactionManager) {
+      TransactionFactory transactionFactory) {
     this.orderDao = orderDao;
     this.orderItemsDao = orderItemsDao;
     this.itemDao = itemDao;
-    this.transactionManager = transactionManager;
+    this.transactionFactory = transactionFactory;
   }
 
   @Override
   public void orderItems(Cart cart, User user) throws SQLException, IllegalStateException {
-    TransactionManager tm = transactionManager.begin();
+    TransactionManager tm = transactionFactory.begin();
     try {
       List<Item> items = itemDao.findAll(tm.getConn()); // todo: kan optimeras
       List<Item> cartItems = cart.getCartItems();

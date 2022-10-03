@@ -11,6 +11,7 @@ import com.yohanmarcus.webshop.order.service.OrderService;
 import com.yohanmarcus.webshop.order.service.OrderServiceImpl;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +31,10 @@ class OrderServiceTest {
   private final OrderDao orderDao = mock(OrderDao.class);
   private final OrderItemsDao orderItemsDao = mock(OrderItemsDao.class);
   private final ItemDao itemDao = mock(ItemDao.class);
+  private final TransactionFactory tf = mock(TransactionFactory.class);
   private final TransactionManager tm = mock(TransactionManager.class);
   private final OrderService orderService =
-      new OrderServiceImpl(orderDao, orderItemsDao, itemDao, tm);
+      new OrderServiceImpl(orderDao, orderItemsDao, itemDao, tf);
 
   @Test
   void testOrderItems_commitsOnWorking() throws SQLException {
@@ -41,7 +43,7 @@ class OrderServiceTest {
     Cart cart = new Cart();
     cart.addToCart(allItems.get(0));
 
-    when(tm.begin()).thenReturn(tm);
+    when(tf.begin()).thenReturn(tm);
     when(itemDao.findAll(any())).thenReturn(allItems);
 
     orderService.orderItems(cart, User.of("1", "a", "a", UserRole.ADMIN));
@@ -60,7 +62,7 @@ class OrderServiceTest {
     cart.addToCart(allItems.get(0));
     cart.addToCart(allItems.get(0));
 
-    when(tm.begin()).thenReturn(tm);
+    when(tf.begin()).thenReturn(tm);
     when(itemDao.findAll(any())).thenReturn(allItems);
 
     assertThrows(

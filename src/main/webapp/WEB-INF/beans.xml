@@ -4,7 +4,4 @@
        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                       http://xmlns.jcp.org/xml/ns/javaee/beans_2_0.xsd"
        bean-discovery-mode="all">
-    <interceptors>
-        <class>com.yohanmarcus.webshop.util.TransactionInterceptor</class>
-    </interceptors>
 </beans>
