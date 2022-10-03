@@ -61,6 +61,7 @@
     <p>
         Total: $<%= order.getTotal() %>
     </p>
+    <a href="/staff/order/edit?id=<%= order.getOrder().getId() %>">Edit</a>
     <% } %>
 </main>
 
