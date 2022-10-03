@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +21,16 @@ class ItemDaoIntegrationTest extends IntegrationTest {
   @BeforeEach
   void beforeEach() throws SQLException {
     itemDao.removeAll(null);
+  }
+
+  @Test
+  void testItemDaoFindAll_works() throws SQLException {
+    Item item = generateNewItem();
+    itemDao.create(item, null);
+    itemDao.create(item, null);
+    itemDao.create(item, null);
+    List<Item> items = itemDao.findAll(null);
+    assertEquals(3, items.size());
   }
 
   @Test

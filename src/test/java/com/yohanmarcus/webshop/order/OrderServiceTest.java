@@ -5,7 +5,10 @@ import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
+import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderItems;
+import com.yohanmarcus.webshop.order.domain.OrderStatus;
+import com.yohanmarcus.webshop.order.domain.OrderWithItems;
 import com.yohanmarcus.webshop.order.service.OrderService;
 import com.yohanmarcus.webshop.order.service.OrderServiceImpl;
 import com.yohanmarcus.webshop.user.domain.User;
@@ -17,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -80,6 +84,27 @@ class OrderServiceTest {
         () -> orderService.orderItems(cart, User.of("1", "a", "a", UserRole.ADMIN)));
 
     verify(tm, times(0)).commit();
+    verify(tm).close();
+  }
+
+  @Test
+  void testGetOrderByUser() throws SQLException {
+    User user = User.of("2", "admin", "admin", UserRole.USER);
+    List<Order> order = List.of(Order.of("2", user.getId(), OrderStatus.PACKAGING));
+    List<OrderItems> orderItems = List.of(OrderItems.of("1", "2", "a", 2, 3, "", ""));
+
+    when(tf.begin()).thenReturn(tm);
+
+    when(orderDao.findByUserId(eq(user.getId()), eq(null))).thenReturn(order);
+    when(orderItemsDao.findByOrderId(eq("2"), eq(null))).thenReturn(orderItems);
+
+    List<OrderWithItems> orderWithItems = orderService.getOrderByUser(user);
+    var ordWItems = orderWithItems.get(0);
+
+    assertEquals(orderItems, ordWItems.getItems());
+    assertEquals(order.get(0), ordWItems.getOrder());
+
+    verify(tm).commit();
     verify(tm).close();
   }
 }

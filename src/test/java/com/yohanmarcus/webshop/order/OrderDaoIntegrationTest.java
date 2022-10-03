@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,6 +29,16 @@ class OrderDaoIntegrationTest extends IntegrationTest {
     orderDao.removeAll(null);
     userDao.removeAll(null);
     userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN), null);
+  }
+
+  @Test
+  void testItemDaoFindAll_works() throws SQLException {
+    Order order = Order.of(null, userId, OrderStatus.PLACED);
+    orderDao.create(order, null);
+    orderDao.create(order, null);
+    orderDao.create(order, null);
+    List<Order> orders = orderDao.findAll(null);
+    assertEquals(3, orders.size());
   }
 
   @Test
@@ -48,6 +59,14 @@ class OrderDaoIntegrationTest extends IntegrationTest {
     orderDao.update(order, null);
     Order gotOrder = orderDao.findById(id, null).get();
     assertEquals(order, gotOrder);
+  }
+
+  @Test
+  void testOrderByUser() throws SQLException {
+    Order order = Order.of(null, userId, OrderStatus.PLACED);
+    orderDao.create(order, null);
+    List<Order> gotOrder = orderDao.findByUserId(userId, null);
+    assertEquals(1, gotOrder.size());
   }
 
   @Test

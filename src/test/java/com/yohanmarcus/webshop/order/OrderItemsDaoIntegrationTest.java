@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,9 +31,11 @@ class OrderItemsDaoIntegrationTest extends IntegrationTest {
   private final ItemDao itemDao = new ItemDaoImpl();
   private final OrderItemsDao orderItemsDao = new OrderItemsDaoImpl();
   private String orderId;
+  private String orderId2;
 
   @BeforeEach
   void beforeEach() throws SQLException {
+    orderItemsDao.removeAll(null);
     orderDao.removeAll(null);
     userDao.removeAll(null);
     itemDao.removeAll(null);
@@ -40,6 +43,28 @@ class OrderItemsDaoIntegrationTest extends IntegrationTest {
     itemDao.create(Item.of(null, "t", 3, 2, "", ""), null);
     String userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN), null);
     orderId = orderDao.create(Order.of(null, userId, OrderStatus.PLACED), null);
+    orderId2 = orderDao.create(Order.of(null, userId, OrderStatus.PLACED), null);
+  }
+
+  @Test
+  void testItemDaoFindAll_works() throws SQLException {
+    var orderItem = OrderItems.of(null, orderId, "hello", 2, 3, "", "");
+    orderItemsDao.create(orderItem, null);
+    orderItemsDao.create(orderItem, null);
+    orderItemsDao.create(orderItem, null);
+    List<OrderItems> orderItems = orderItemsDao.findAll(null);
+    assertEquals(3, orderItems.size());
+  }
+
+  @Test
+  void testItemDaoFindByOrderId_works() throws SQLException {
+    var orderItem = OrderItems.of(null, orderId, "hello", 2, 3, "", "");
+    orderItemsDao.create(orderItem, null);
+    orderItemsDao.create(orderItem, null);
+    orderItem.setOrderId(orderId2);
+    orderItemsDao.create(orderItem, null);
+    List<OrderItems> orderItems = orderItemsDao.findByOrderId(orderId, null);
+    assertEquals(2, orderItems.size());
   }
 
   @Test
