@@ -28,4 +28,19 @@ public class ItemServiceImpl implements ItemService {
         .findById(id, null)
         .orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
+
+  @Override
+  public void removeById(String id) throws SQLException {
+    itemDao.removeById(id, null);
+  }
+
+  @Override
+  public void create(Item item) throws SQLException {
+    itemDao.create(item, null);
+  }
+
+  @Override
+  public void update(Item item) throws SQLException {
+    itemDao.update(item, null);
+  }
 }
