@@ -104,4 +104,16 @@ public class OrderDaoImpl implements OrderDao {
       closeConnection(conn, optionalConn);
     }
   }
+
+  @Override
+  public List<Order> findByUserId(String userId, Connection optionalConn) throws SQLException {
+    Connection conn = null;
+    try {
+      conn = getConnection(optionalConn);
+      QueryRunner run = new QueryRunner();
+      return run.query(conn, "SELECT * FROM orders WHERE user_id = ?", orderHandler, userId);
+    } finally {
+      closeConnection(conn, optionalConn);
+    }
+  }
 }

@@ -7,8 +7,8 @@ import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
 import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderItems;
-import com.yohanmarcus.webshop.order.domain.OrderItemsId;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
+import com.yohanmarcus.webshop.order.domain.OrderWithItems;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
@@ -16,6 +16,7 @@ import com.yohanmarcus.webshop.util.TransactionManager;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -45,6 +46,8 @@ public class OrderServiceImpl implements OrderService {
       List<Item> items = itemDao.findAll(tm.getConn()); // todo: kan optimeras
       List<Item> cartItems = cart.getCartItems();
 
+      if (cartItems.isEmpty()) throw new IllegalStateException("Cart is empty!");
+
       // create order first
       String orderId =
           orderDao.create(Order.of(null, user.getId(), OrderStatus.PLACED), tm.getConn());
@@ -67,14 +70,39 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // create order-item entry
-        OrderItemsId id = OrderItemsId.of(orderId, cartItem.getId());
-        orderItemsDao.create(OrderItems.of(id, cartItem.getQuantity()), tm.getConn());
+        var orderItem =
+            OrderItems.of(
+                null,
+                orderId,
+                cartItem.getName(),
+                cartItem.getPrice(),
+                cartItem.getQuantity(),
+                cartItem.getDescription(),
+                cartItem.getCategory());
+        orderItemsDao.create(orderItem, tm.getConn());
 
         // update quantity
         itemWithSameId.setQuantity(itemWithSameId.getQuantity() - cartItem.getQuantity());
         itemDao.update(itemWithSameId, tm.getConn());
       }
       tm.commit();
+    } finally {
+      tm.close();
+    }
+  }
+
+  @Override
+  public List<OrderWithItems> getOrderByUser(User user) throws SQLException {
+    TransactionManager tm = transactionFactory.begin();
+    try {
+      List<OrderWithItems> orderWithItems = new ArrayList<>();
+      var orders = orderDao.findByUserId(user.getId(), tm.getConn());
+      for (var order : orders) {
+        orderWithItems.add(
+            OrderWithItems.of(order, orderItemsDao.findByOrderId(order.getId(), tm.getConn())));
+      }
+      tm.commit();
+      return orderWithItems;
     } finally {
       tm.close();
     }

@@ -26,6 +26,37 @@ public class OrderControllerTest {
   private final OrderController orderController = new OrderController(orderService);
 
   @Test
+  void testDoGet_redirectsNonLoggedIn() throws ServletException, IOException {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    HttpServletResponse res = mock(HttpServletResponse.class);
+    HttpSession session = mock(HttpSession.class);
+
+    when(req.getSession()).thenReturn(session);
+    when(session.getAttribute("user")).thenReturn(null);
+
+    orderController.doGet(req, res);
+
+    verify(res).sendRedirect("/login");
+  }
+
+  @Test
+  void testDoGet_rendersPage() throws ServletException, IOException {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    HttpServletResponse res = mock(HttpServletResponse.class);
+    RequestDispatcher reqDispatch = mock(RequestDispatcher.class);
+    HttpSession session = mock(HttpSession.class);
+
+    when(req.getSession()).thenReturn(session);
+    when(session.getAttribute("user")).thenReturn(User.of("1", "ad", "ad", UserRole.USER));
+    when(req.getRequestDispatcher(eq("/WEB-INF/jsp/order.jsp"))).thenReturn(reqDispatch);
+
+    orderController.doGet(req, res);
+
+    verify(req).setAttribute(eq("orders"), any());
+    verify(reqDispatch).forward(req, res);
+  }
+
+  @Test
   void testDoPost_resetsCart() throws ServletException, IOException {
     HttpServletRequest req = mock(HttpServletRequest.class);
     HttpServletResponse res = mock(HttpServletResponse.class);
@@ -38,7 +69,7 @@ public class OrderControllerTest {
     orderController.doPost(req, res);
 
     verify(session).setAttribute(eq("cart"), any());
-    verify(res).sendRedirect("/cart");
+    verify(res).sendRedirect("/order");
   }
 
   @Test

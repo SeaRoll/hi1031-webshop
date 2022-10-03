@@ -17,7 +17,7 @@
     <li>
         <a href="/logout">Hello, <%= user.getUsername() %>! Click here to log out</a>
     <li>_______________________________</li>
-    <li><a href="/orders">Orders</a></li>
+    <li><a href="/order">Orders</a></li>
     </li>
     <%} else { %>
     <li>
