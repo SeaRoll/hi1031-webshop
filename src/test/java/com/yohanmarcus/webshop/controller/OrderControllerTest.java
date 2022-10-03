@@ -1,0 +1,62 @@
+package com.yohanmarcus.webshop.controller;
+
+import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.order.service.OrderService;
+import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.domain.UserRole;
+import org.junit.jupiter.api.Test;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+public class OrderControllerTest {
+  private final OrderService orderService = mock(OrderService.class);
+  private final OrderController orderController = new OrderController(orderService);
+
+  @Test
+  void testDoPost_resetsCart() throws ServletException, IOException {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    HttpServletResponse res = mock(HttpServletResponse.class);
+    HttpSession session = mock(HttpSession.class);
+
+    when(req.getSession()).thenReturn(session);
+    when(session.getAttribute("cart")).thenReturn(new Cart());
+    when(session.getAttribute("user")).thenReturn(User.of("1", "ad", "ad", UserRole.USER));
+
+    orderController.doPost(req, res);
+
+    verify(session).setAttribute(eq("cart"), any());
+    verify(res).sendRedirect("/cart");
+  }
+
+  @Test
+  void testDoPost_addErrorOnThrow() throws ServletException, IOException, SQLException {
+    HttpServletRequest req = mock(HttpServletRequest.class);
+    HttpServletResponse res = mock(HttpServletResponse.class);
+    HttpSession session = mock(HttpSession.class);
+    RequestDispatcher reqDispatch = mock(RequestDispatcher.class);
+
+    when(req.getSession()).thenReturn(session);
+    when(req.getRequestDispatcher(any())).thenReturn(reqDispatch);
+    when(session.getAttribute("cart")).thenReturn(new Cart());
+    when(session.getAttribute("user")).thenReturn(User.of("1", "ad", "ad", UserRole.USER));
+
+    doThrow(IllegalStateException.class).when(orderService).orderItems(any(), any());
+    orderController.doPost(req, res);
+
+    verify(req).setAttribute(eq("error"), any());
+    verify(reqDispatch).forward(req, res);
+  }
+}

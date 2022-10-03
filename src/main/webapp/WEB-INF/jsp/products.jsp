@@ -27,26 +27,36 @@
             </thead>
             <tbody>
             <%
-                for (Item itemDto : itemList) {
+                for (Item item : itemList) {
             %>
             <tr>
                 <td>
-                    <%= itemDto.getName() %>
+                    <%= item.getName() %>
                 </td>
                 <td>
-                    $<%= itemDto.getPrice() %>
+                    $<%= item.getPrice() %>
                 </td>
                 <td>
-                    <%= itemDto.getQuantity() %>
+                    <%= item.getQuantity() %>
                 </td>
                 <td>
-                    <%= itemDto.getDescription() %>
+                    <%= item.getDescription() %>
                 </td>
                 <td>
-                    <%= itemDto.getCategory() %>
+                    <%= item.getCategory() %>
                 </td>
                 <td>
-                    <button type="submit" name="itemId" value="<%= itemDto.getId() %>">Add to cart</button>
+                    <%
+                        if (item.getQuantity() > 0) {
+                    %>
+                    <button type="submit" name="itemId" value="<%= item.getId() %>">Add to cart</button>
+                    <%
+                    } else {
+                    %>
+                    <p>out of stock</p>
+                    <%
+                        }
+                    %>
                 </td>
             </tr>
             <%
