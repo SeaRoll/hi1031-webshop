@@ -15,6 +15,9 @@ public class JspDispatcher {
   public static final String WEB_INF_JSP_REGISTER_JSP = "/WEB-INF/jsp/register.jsp";
   public static final String WEB_INF_JSP_ADMIN_ORDER_JSP = "/WEB-INF/jsp/admin-order.jsp";
 
+  public static final String WEB_INF_JSP_ADMIN_ORDER_CHANGE_JSP =
+      "/WEB-INF/jsp/admin-order-change.jsp";
+
   public static void processRequest(HttpServletRequest req, HttpServletResponse res, String file)
       throws ServletException, IOException {
     RequestDispatcher dispatcher = req.getRequestDispatcher(file);

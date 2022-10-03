@@ -40,6 +40,29 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
+  public Order getOrderById(String id) throws SQLException {
+    return orderDao
+        .findById(id, null)
+        .orElseThrow(() -> new IllegalStateException(String.format("Id %s not found", id)));
+  }
+
+  @Override
+  public void updateOrderStatus(String id, OrderStatus orderStatus) throws SQLException {
+    TransactionManager tm = transactionFactory.begin();
+    try {
+      Order order =
+          orderDao
+              .findById(id, tm.getConn())
+              .orElseThrow(() -> new IllegalStateException(String.format("Id %s not found", id)));
+      order.setStatus(orderStatus);
+      orderDao.update(order, tm.getConn());
+      tm.commit();
+    } finally {
+      tm.close();
+    }
+  }
+
+  @Override
   public void orderItems(Cart cart, User user) throws SQLException, IllegalStateException {
     TransactionManager tm = transactionFactory.begin();
     try {

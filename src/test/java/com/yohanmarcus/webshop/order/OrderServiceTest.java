@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -127,5 +128,31 @@ class OrderServiceTest {
 
     verify(tm).commit();
     verify(tm).close();
+  }
+
+  @Test
+  void testGetOrderById_getsOrder() throws SQLException {
+    Order order = Order.of("1", "123", OrderStatus.PLACED);
+    when(orderDao.findById(eq("1"), eq(null))).thenReturn(Optional.ofNullable(order));
+    Order gotOrder = orderService.getOrderById("1");
+    assertEquals(order, gotOrder);
+  }
+
+  @Test
+  void testGetOrderById_throwOnNotFound() throws SQLException {
+    when(orderDao.findById(eq("1"), eq(null))).thenReturn(Optional.empty());
+    assertThrows(IllegalStateException.class, () -> orderService.getOrderById("1"));
+  }
+
+  @Test
+  void testUpdateOrderStatus_updatesOrder() throws SQLException {
+    Order order = Order.of("1", "123", OrderStatus.PLACED);
+
+    when(tf.begin()).thenReturn(tm);
+    when(orderDao.findById(eq("1"), any())).thenReturn(Optional.ofNullable(order));
+
+    orderService.updateOrderStatus(order.getId(), OrderStatus.PACKAGING);
+
+    verify(orderDao).update(any(), any());
   }
 }
