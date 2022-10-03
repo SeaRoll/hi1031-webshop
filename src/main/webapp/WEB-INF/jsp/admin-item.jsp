@@ -54,6 +54,7 @@
         %>
         </tbody>
     </table>
+    <a href="/admin/item/change">Create Item</a>
 </main>
 
 
