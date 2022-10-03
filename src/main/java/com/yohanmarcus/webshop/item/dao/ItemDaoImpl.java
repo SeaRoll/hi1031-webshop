@@ -19,11 +19,6 @@ public class ItemDaoImpl implements ItemDao {
   private final ItemHandler itemHandler = new ItemHandler();
 
   @Override
-  public List<Item> findAll() throws SQLException {
-    return findAll(null);
-  }
-
-  @Override
   public List<Item> findAll(Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
@@ -34,11 +29,6 @@ public class ItemDaoImpl implements ItemDao {
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public Optional<Item> findById(String id) throws SQLException {
-    return findById(id, null);
   }
 
   @Override
@@ -53,11 +43,6 @@ public class ItemDaoImpl implements ItemDao {
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public String create(Item item) throws SQLException {
-    return create(item, null);
   }
 
   @Override
@@ -83,11 +68,6 @@ public class ItemDaoImpl implements ItemDao {
   }
 
   @Override
-  public Item update(Item item) throws SQLException {
-    return update(item, null);
-  }
-
-  @Override
   public Item update(Item item, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
@@ -109,11 +89,6 @@ public class ItemDaoImpl implements ItemDao {
   }
 
   @Override
-  public String removeById(String id) throws SQLException {
-    return removeById(id, null);
-  }
-
-  @Override
   public String removeById(String id, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
@@ -124,11 +99,6 @@ public class ItemDaoImpl implements ItemDao {
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public void removeAll() throws SQLException {
-    removeAll(null);
   }
 
   @Override

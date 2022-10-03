@@ -18,11 +18,6 @@ public class OrderItemsDaoImpl implements OrderItemsDao {
   private final OrderItemsHandler orderItemsHandler = new OrderItemsHandler();
 
   @Override
-  public List<OrderItems> findAll() throws SQLException {
-    return findAll(null);
-  }
-
-  @Override
   public List<OrderItems> findAll(Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
@@ -32,11 +27,6 @@ public class OrderItemsDaoImpl implements OrderItemsDao {
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public Optional<OrderItems> findById(OrderItemsId id) throws SQLException {
-    return findById(id, null);
   }
 
   @Override
@@ -60,11 +50,6 @@ public class OrderItemsDaoImpl implements OrderItemsDao {
   }
 
   @Override
-  public OrderItemsId create(OrderItems item) throws SQLException {
-    return create(item, null);
-  }
-
-  @Override
   public OrderItemsId create(OrderItems item, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
@@ -80,11 +65,6 @@ public class OrderItemsDaoImpl implements OrderItemsDao {
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public OrderItems update(OrderItems item) throws SQLException {
-    return update(item, null);
   }
 
   @Override
@@ -108,11 +88,6 @@ public class OrderItemsDaoImpl implements OrderItemsDao {
   }
 
   @Override
-  public OrderItemsId removeById(OrderItemsId id) throws SQLException {
-    return removeById(id, null);
-  }
-
-  @Override
   public OrderItemsId removeById(OrderItemsId id, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
@@ -127,11 +102,6 @@ public class OrderItemsDaoImpl implements OrderItemsDao {
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public void removeAll() throws SQLException {
-    removeAll(null);
   }
 
   @Override

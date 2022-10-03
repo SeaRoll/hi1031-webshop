@@ -46,7 +46,8 @@ public class OrderServiceImpl implements OrderService {
       List<Item> cartItems = cart.getCartItems();
 
       // create order first
-      String orderId = orderDao.create(Order.of(null, user.getId(), OrderStatus.PLACED));
+      String orderId =
+          orderDao.create(Order.of(null, user.getId(), OrderStatus.PLACED), tm.getConn());
 
       for (Item cartItem : cartItems) {
         // get item that is same as cart item

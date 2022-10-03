@@ -35,21 +35,21 @@ class OrderItemsDaoIntegrationTest extends IntegrationTest {
 
   @BeforeEach
   void beforeEach() throws SQLException {
-    orderDao.removeAll();
-    userDao.removeAll();
-    itemDao.removeAll();
+    orderDao.removeAll(null);
+    userDao.removeAll(null);
+    itemDao.removeAll(null);
 
-    itemId = itemDao.create(Item.of(null, "t", 3, 2, "", ""));
-    String userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN));
-    orderId = orderDao.create(Order.of(null, userId, OrderStatus.PLACED));
+    itemId = itemDao.create(Item.of(null, "t", 3, 2, "", ""), null);
+    String userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN), null);
+    orderId = orderDao.create(Order.of(null, userId, OrderStatus.PLACED), null);
   }
 
   @Test
   void testOrderItemsDaoCreate_savesNewItem() throws SQLException {
     OrderItemsId id = OrderItemsId.of(orderId, itemId);
     OrderItems orderItems = OrderItems.of(id, 2);
-    orderItemsDao.create(orderItems);
-    OrderItems gotItem = orderItemsDao.findById(id).get();
+    orderItemsDao.create(orderItems, null);
+    OrderItems gotItem = orderItemsDao.findById(id, null).get();
     assertEquals(orderItems, gotItem);
   }
 
@@ -57,11 +57,11 @@ class OrderItemsDaoIntegrationTest extends IntegrationTest {
   void testOrderItemsDaoUpdate() throws SQLException {
     OrderItemsId id = OrderItemsId.of(orderId, itemId);
     OrderItems orderItems = OrderItems.of(id, 2);
-    orderItemsDao.create(orderItems);
+    orderItemsDao.create(orderItems, null);
     orderItems.setQuantity(3);
-    orderItemsDao.update(orderItems);
+    orderItemsDao.update(orderItems, null);
 
-    OrderItems gotItem = orderItemsDao.findById(id).get();
+    OrderItems gotItem = orderItemsDao.findById(id, null).get();
     assertEquals(orderItems, gotItem);
   }
 
@@ -69,8 +69,8 @@ class OrderItemsDaoIntegrationTest extends IntegrationTest {
   void testOrderItemsDaoDelete() throws SQLException {
     OrderItemsId id = OrderItemsId.of(orderId, itemId);
     OrderItems orderItems = OrderItems.of(id, 2);
-    orderItemsDao.create(orderItems);
-    orderItemsDao.removeById(id);
-    assertTrue(orderItemsDao.findById(id).isEmpty());
+    orderItemsDao.create(orderItems, null);
+    orderItemsDao.removeById(id, null);
+    assertTrue(orderItemsDao.findById(id, null).isEmpty());
   }
 }

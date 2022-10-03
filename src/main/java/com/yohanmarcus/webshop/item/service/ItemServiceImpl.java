@@ -19,11 +19,13 @@ public class ItemServiceImpl implements ItemService {
 
   @Override
   public List<Item> findAll() throws SQLException {
-    return itemDao.findAll();
+    return itemDao.findAll(null);
   }
 
   @Override
   public Item findById(String id) throws SQLException {
-    return itemDao.findById(id).orElseThrow(() -> new IllegalStateException("Does not exist!"));
+    return itemDao
+        .findById(id, null)
+        .orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
 }

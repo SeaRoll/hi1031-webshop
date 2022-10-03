@@ -22,7 +22,8 @@ public class CartServiceTest {
   @Test
   void addToCart_returnsSame() throws SQLException {
     Cart cart = new Cart();
-    when(mockDao.findById(eq("1"))).thenReturn(Optional.of(Item.of("1", "a", 2, 2, "", "")));
+    when(mockDao.findById(eq("1"), eq(null)))
+        .thenReturn(Optional.of(Item.of("1", "a", 2, 2, "", "")));
     Cart cartFromService = cartService.addToCart("1", cart);
     assertEquals(cart, cartFromService);
   }
@@ -30,7 +31,8 @@ public class CartServiceTest {
   @Test
   void removeFromCart_returnsSame() throws SQLException {
     Cart cart = new Cart();
-    when(mockDao.findById(eq("1"))).thenReturn(Optional.of(Item.of("1", "a", 2, 2, "", "")));
+    when(mockDao.findById(eq("1"), eq(null)))
+        .thenReturn(Optional.of(Item.of("1", "a", 2, 2, "", "")));
     Cart cartFromService = cartService.removeFromCart("1", cart);
     assertEquals(cart, cartFromService);
   }

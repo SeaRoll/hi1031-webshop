@@ -22,7 +22,7 @@ class ItemServiceTest {
 
   @Test
   void testFindAll_givesCorrectList() throws SQLException {
-    when(mockDao.findAll())
+    when(mockDao.findAll(null))
         .thenReturn(
             List.of(Item.of("1", "test", 2, 3, "", ""), Item.of("2", "tes2", 2, 3, "", "")));
     List<Item> items = itemService.findAll();
@@ -32,14 +32,14 @@ class ItemServiceTest {
   @Test
   void testFindOne_givesOnCorrectParameter() throws SQLException {
     Item returningItem = Item.of("1", "test", 2, 3, "", "");
-    when(mockDao.findById(eq("1"))).thenReturn(Optional.of(returningItem));
+    when(mockDao.findById(eq("1"), eq(null))).thenReturn(Optional.of(returningItem));
     Item item = itemService.findById("1");
     assertEquals(returningItem, item);
   }
 
   @Test
   void testFindOne_givesErrorOnWrongParameter() throws SQLException {
-    when(mockDao.findById(eq("1"))).thenReturn(Optional.empty());
+    when(mockDao.findById(eq("1"), eq(null))).thenReturn(Optional.empty());
     assertThrows(IllegalStateException.class, () -> itemService.findById("1"));
   }
 }
