@@ -36,12 +36,14 @@ create table if not exists orders
 -- Create a table if not exists a order_item table with (order_id, item_id, quantity) fields and order_id, item_id as a composite primary and foreign key
 create table if not exists order_items
 (
-    order_id varchar(255) not null,
-    item_id  varchar(255) not null,
-    quantity integer      not null,
-    primary key (order_id, item_id),
-    foreign key (order_id) references orders (id) on delete cascade,
-    foreign key (item_id) references items (id) on delete cascade
+    id          varchar(255) primary key,
+    order_id    varchar(255) not null,
+    name        varchar(255) not null,
+    price       integer      not null,
+    quantity    integer      not null,
+    description varchar(255) not null,
+    category    varchar(255) not null,
+    foreign key (order_id) references orders (id) on delete cascade
 );
 
 -- create an superadmin user

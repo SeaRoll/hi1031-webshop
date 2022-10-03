@@ -1,25 +1,27 @@
 package com.yohanmarcus.webshop.order.dao;
 
 import com.yohanmarcus.webshop.order.domain.OrderItems;
-import com.yohanmarcus.webshop.order.domain.OrderItemsId;
-import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.BasicRowProcessor;
+import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class OrderItemsHandler implements ResultSetHandler<List<OrderItems>> {
+public class OrderItemsHandler extends BeanListHandler<OrderItems> {
+  public OrderItemsHandler() {
+    super(OrderItems.class, new BasicRowProcessor(new BeanProcessor(getColumnsToFieldsMap())));
+  }
 
-  @Override
-  public List<OrderItems> handle(ResultSet resultSet) throws SQLException {
-    List<OrderItems> items = new ArrayList<>();
-    while (resultSet.next()) {
-      OrderItemsId id =
-          OrderItemsId.of(resultSet.getString("order_id"), resultSet.getString("item_id"));
-      OrderItems item = OrderItems.of(id, resultSet.getInt("quantity"));
-      items.add(item);
-    }
-    return items;
+  private static Map<String, String> getColumnsToFieldsMap() {
+    Map<String, String> columnsToFieldsMap = new HashMap<>();
+    columnsToFieldsMap.put("id", "id");
+    columnsToFieldsMap.put("order_id", "orderId");
+    columnsToFieldsMap.put("name", "name");
+    columnsToFieldsMap.put("price", "price");
+    columnsToFieldsMap.put("quantity", "quantity");
+    columnsToFieldsMap.put("description", "description");
+    columnsToFieldsMap.put("category", "category");
+    return columnsToFieldsMap;
   }
 }

@@ -6,7 +6,6 @@ import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
 import com.yohanmarcus.webshop.order.domain.OrderItems;
-import com.yohanmarcus.webshop.order.domain.OrderItemsId;
 import com.yohanmarcus.webshop.order.service.OrderService;
 import com.yohanmarcus.webshop.order.service.OrderServiceImpl;
 import com.yohanmarcus.webshop.user.domain.User;
@@ -41,14 +40,25 @@ class OrderServiceTest {
     List<Item> allItems =
         List.of(Item.of("1", "test", 2, 5, "", ""), Item.of("2", "hello", 3, 2, "", ""));
     Cart cart = new Cart();
-    cart.addToCart(allItems.get(0));
+    Item item = allItems.get(0);
+    cart.addToCart(item);
 
     when(tf.begin()).thenReturn(tm);
     when(itemDao.findAll(any())).thenReturn(allItems);
 
     orderService.orderItems(cart, User.of("1", "a", "a", UserRole.ADMIN));
 
-    verify(orderItemsDao).create(OrderItems.of(OrderItemsId.of(any(), "1"), 1), any());
+    verify(orderItemsDao)
+        .create(
+            OrderItems.of(
+                any(),
+                "1",
+                item.getName(),
+                item.getPrice(),
+                4,
+                item.getDescription(),
+                item.getCategory()),
+            any());
     verify(itemDao).update(eq(Item.of("1", "test", 2, 4, "", "")), any());
     verify(tm).commit();
     verify(tm).close();

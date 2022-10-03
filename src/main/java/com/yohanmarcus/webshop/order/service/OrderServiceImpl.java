@@ -7,7 +7,6 @@ import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
 import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderItems;
-import com.yohanmarcus.webshop.order.domain.OrderItemsId;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.util.TransactionFactory;
@@ -67,8 +66,16 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // create order-item entry
-        OrderItemsId id = OrderItemsId.of(orderId, cartItem.getId());
-        orderItemsDao.create(OrderItems.of(id, cartItem.getQuantity()), tm.getConn());
+        var orderItem =
+            OrderItems.of(
+                null,
+                orderId,
+                cartItem.getName(),
+                cartItem.getPrice(),
+                cartItem.getQuantity(),
+                cartItem.getDescription(),
+                cartItem.getCategory());
+        orderItemsDao.create(orderItem, tm.getConn());
 
         // update quantity
         itemWithSameId.setQuantity(itemWithSameId.getQuantity() - cartItem.getQuantity());
