@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -47,7 +48,8 @@ class LoginControllerTest {
     HttpSession session = mock(HttpSession.class);
 
     when(req.getSession()).thenReturn(session);
-    when(session.getAttribute(eq("user"))).thenReturn(User.of(1, "", "", UserRole.USER));
+    when(session.getAttribute(eq("user")))
+        .thenReturn(User.of(UUID.randomUUID().toString(), "", "", UserRole.USER));
 
     loginController.doGet(req, res);
 
@@ -56,7 +58,7 @@ class LoginControllerTest {
 
   @Test
   void testDoPost_redirectsUserOnLogin() throws ServletException, IOException, SQLException {
-    User user = User.of(1, "username", "password", UserRole.USER);
+    User user = User.of(UUID.randomUUID().toString(), "username", "password", UserRole.USER);
     HttpServletRequest req = mock(HttpServletRequest.class);
     HttpServletResponse res = mock(HttpServletResponse.class);
     HttpSession session = mock(HttpSession.class);

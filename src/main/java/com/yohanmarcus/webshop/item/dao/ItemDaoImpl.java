@@ -3,22 +3,20 @@ package com.yohanmarcus.webshop.item.dao;
 import com.yohanmarcus.webshop.item.domain.Item;
 import org.apache.commons.dbutils.QueryRunner;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.yohanmarcus.webshop.util.DatabaseConfig.closeConnection;
 import static com.yohanmarcus.webshop.util.DatabaseConfig.getConnection;
 
+@ApplicationScoped
 public class ItemDaoImpl implements ItemDao {
 
   private final ItemHandler itemHandler = new ItemHandler();
-
-  @Override
-  public List<Item> findAll() throws SQLException {
-    return findAll(null);
-  }
 
   @Override
   public List<Item> findAll(Connection optionalConn) throws SQLException {
@@ -27,19 +25,14 @@ public class ItemDaoImpl implements ItemDao {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
 
-      return run.query(conn, "SELECT * FROM items", itemHandler);
+      return run.query(conn, "SELECT * FROM items order by name asc", itemHandler);
     } finally {
       closeConnection(conn, optionalConn);
     }
   }
 
   @Override
-  public Optional<Item> findById(Integer id) throws SQLException {
-    return findById(id, null);
-  }
-
-  @Override
-  public Optional<Item> findById(Integer id, Connection optionalConn) throws SQLException {
+  public Optional<Item> findById(String id, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
@@ -53,36 +46,29 @@ public class ItemDaoImpl implements ItemDao {
   }
 
   @Override
-  public void create(Item item) throws SQLException {
-    create(item, null);
-  }
-
-  @Override
-  public void create(Item item, Connection optionalConn) throws SQLException {
+  public String create(Item item, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
+      String newId = UUID.randomUUID().toString();
       run.update(
           conn,
-          "INSERT INTO items (name, price, quantity, description, category) VALUES (?, ?, ?, ?, ?)",
+          "INSERT INTO items (id, name, price, quantity, description, category) VALUES (?, ?, ?, ?, ?, ?)",
+          newId,
           item.getName(),
           item.getPrice(),
           item.getQuantity(),
           item.getDescription(),
           item.getCategory());
+      return newId;
     } finally {
       closeConnection(conn, optionalConn);
     }
   }
 
   @Override
-  public void update(Item item) throws SQLException {
-    update(item, null);
-  }
-
-  @Override
-  public void update(Item item, Connection optionalConn) throws SQLException {
+  public Item update(Item item, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
@@ -96,31 +82,23 @@ public class ItemDaoImpl implements ItemDao {
           item.getDescription(),
           item.getCategory(),
           item.getId());
+      return item;
     } finally {
       closeConnection(conn, optionalConn);
     }
   }
 
   @Override
-  public void removeById(Integer id) throws SQLException {
-    removeById(id, null);
-  }
-
-  @Override
-  public void removeById(Integer id, Connection optionalConn) throws SQLException {
+  public String removeById(String id, Connection optionalConn) throws SQLException {
     Connection conn = null;
     try {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
       run.update(conn, "DELETE FROM items WHERE id = ?", id);
+      return id;
     } finally {
       closeConnection(conn, optionalConn);
     }
-  }
-
-  @Override
-  public void removeAll() throws SQLException {
-    removeAll(null);
   }
 
   @Override

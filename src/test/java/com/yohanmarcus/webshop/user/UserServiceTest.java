@@ -4,9 +4,10 @@ import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
-import com.yohanmarcus.webshop.user.dto.UserForm;
+import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
+import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 class UserServiceTest {
 
-  private final TransactionManager mockTM = mock(TransactionManager.class);
+  private final TransactionFactory mockTM = mock(TransactionFactory.class);
   private final UserDao mockDao = mock(UserDao.class);
   private final UserService userService = new UserServiceImpl(mockDao, mockTM);
 
@@ -46,7 +47,7 @@ class UserServiceTest {
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findByUsername(eq("validUser"), any()))
-        .thenReturn(Optional.of(User.of(1, "validUser", "password", UserRole.USER)));
+        .thenReturn(Optional.of(User.of("1", "validUser", "password", UserRole.USER)));
 
     assertThrows(InvalidFormException.class, () -> userService.registerUser(registerForm));
 
@@ -99,7 +100,7 @@ class UserServiceTest {
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findByUsername(eq("validUser"), any()))
-        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword2", UserRole.ADMIN)));
+        .thenReturn(Optional.of(User.of("1", "validUser", "validPassword2", UserRole.ADMIN)));
 
     assertThrows(InvalidFormException.class, () -> userService.loginUser(loginForm));
 
@@ -113,13 +114,13 @@ class UserServiceTest {
     TransactionManager tm = mock(TransactionManager.class);
     when(mockTM.begin()).thenReturn(tm);
     when(mockDao.findByUsername(eq("validUser"), any()))
-        .thenReturn(Optional.of(User.of(1, "validUser", "validPassword", UserRole.USER)));
+        .thenReturn(Optional.of(User.of("1", "validUser", "validPassword", UserRole.USER)));
 
     var userDto = userService.loginUser(loginForm);
 
     verify(tm).commit();
 
-    assertEquals(1, userDto.getId());
+    assertEquals("1", userDto.getId());
     assertEquals("validUser", userDto.getUsername());
     assertEquals(UserRole.USER, userDto.getRole());
 

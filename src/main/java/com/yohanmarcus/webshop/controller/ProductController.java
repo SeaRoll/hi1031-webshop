@@ -1,14 +1,13 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
 import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.service.CartService;
-import com.yohanmarcus.webshop.item.service.CartServiceImpl;
 import com.yohanmarcus.webshop.item.service.ItemService;
-import com.yohanmarcus.webshop.item.service.ItemServiceImpl;
+import com.yohanmarcus.webshop.util.JspDispatcher;
+import lombok.NoArgsConstructor;
 
-import javax.servlet.RequestDispatcher;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,27 +17,19 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_PRODUCTS_JSP;
+
+@NoArgsConstructor
 @WebServlet(name = "productServlet", value = "")
 public class ProductController extends HttpServlet {
 
-  private final ItemService itemService;
-  private final CartService cartService;
+  @Inject private ItemService itemService;
+
+  @Inject private CartService cartService;
 
   public ProductController(ItemService itemService, CartService cartService) {
     this.itemService = itemService;
     this.cartService = cartService;
-  }
-
-  public ProductController() {
-    var itemDao = new ItemDaoImpl();
-    itemService = new ItemServiceImpl(itemDao);
-    cartService = new CartServiceImpl(itemDao);
-  }
-
-  private void processRequest(HttpServletRequest req, HttpServletResponse res)
-      throws ServletException, IOException {
-    RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/products.jsp");
-    dispatcher.forward(req, res);
   }
 
   @Override
@@ -47,7 +38,7 @@ public class ProductController extends HttpServlet {
     try {
       List<Item> itemList = itemService.findAll();
       req.setAttribute("items", itemList);
-      processRequest(req, resp);
+      JspDispatcher.processRequest(req, resp, WEB_INF_JSP_PRODUCTS_JSP);
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
@@ -56,7 +47,7 @@ public class ProductController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
-      Integer clickedId = Integer.parseInt(req.getParameter("itemId"));
+      String clickedId = req.getParameter("itemId");
       Cart cart = (Cart) req.getSession().getAttribute("cart");
       cart = cartService.addToCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);

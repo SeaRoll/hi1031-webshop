@@ -4,25 +4,30 @@ import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
-import com.yohanmarcus.webshop.user.dto.UserForm;
+import com.yohanmarcus.webshop.user.form.UserForm;
+import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@ApplicationScoped
 public class UserServiceImpl implements UserService {
 
   private final UserDao userDao;
-  private final TransactionManager transactionManager;
+  private final TransactionFactory transactionFactory;
 
-  public UserServiceImpl(UserDao userDao, TransactionManager transactionManager) {
+  @Inject
+  public UserServiceImpl(UserDao userDao, TransactionFactory transactionFactory) {
     this.userDao = userDao;
-    this.transactionManager = transactionManager;
+    this.transactionFactory = transactionFactory;
   }
 
   public void registerUser(UserForm form) throws SQLException {
-    TransactionManager tm = transactionManager.begin();
+    TransactionManager tm = transactionFactory.begin();
     try {
       // check form validation
       if (!form.isValid()) throw new InvalidFormException("Form is invalid");
@@ -43,7 +48,7 @@ public class UserServiceImpl implements UserService {
   }
 
   public User loginUser(UserForm form) throws SQLException {
-    TransactionManager tm = transactionManager.begin();
+    TransactionManager tm = transactionFactory.begin();
     try {
       // check form validation
       if (!form.isValid()) throw new InvalidFormException("Form is invalid");

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,14 +20,24 @@ class ItemDaoIntegrationTest extends IntegrationTest {
 
   @BeforeEach
   void beforeEach() throws SQLException {
-    itemDao.removeAll();
+    itemDao.removeAll(null);
+  }
+
+  @Test
+  void testItemDaoFindAll_works() throws SQLException {
+    Item item = generateNewItem();
+    itemDao.create(item, null);
+    itemDao.create(item, null);
+    itemDao.create(item, null);
+    List<Item> items = itemDao.findAll(null);
+    assertEquals(3, items.size());
   }
 
   @Test
   void testItemDaoCreate_savesNewItem() throws SQLException {
     Item item = generateNewItem();
-    itemDao.create(item);
-    Item gotItem = itemDao.findAll().get(0);
+    String id = itemDao.create(item, null);
+    Item gotItem = itemDao.findById(id, null).get();
     assertEquals(item.getName(), gotItem.getName());
     assertEquals(item.getPrice(), gotItem.getPrice());
     assertEquals(item.getQuantity(), gotItem.getQuantity());
@@ -37,21 +48,21 @@ class ItemDaoIntegrationTest extends IntegrationTest {
   @Test
   void testItemDaoUpdate_updatesExistingItem() throws SQLException {
     Item item = generateNewItem();
-    itemDao.create(item);
-    Item gotItem = itemDao.findAll().get(0);
+    String id = itemDao.create(item, null);
+    Item gotItem = itemDao.findById(id, null).get();
     gotItem.setCategory("bruv");
-    itemDao.update(gotItem);
-    Item gotItem2 = itemDao.findById(gotItem.getId()).get();
+    itemDao.update(gotItem, null);
+    Item gotItem2 = itemDao.findById(gotItem.getId(), null).get();
     assertEquals("bruv", gotItem2.getCategory());
   }
 
   @Test
   void testItemDaoRemove_deletesItem() throws SQLException {
     Item item = generateNewItem();
-    itemDao.create(item);
-    Item gotItem = itemDao.findAll().get(0);
-    itemDao.removeById(gotItem.getId());
-    Optional<Item> gotItem2 = itemDao.findById(gotItem.getId());
+    String id = itemDao.create(item, null);
+    Item gotItem = itemDao.findById(id, null).get();
+    itemDao.removeById(gotItem.getId(), null);
+    Optional<Item> gotItem2 = itemDao.findById(gotItem.getId(), null);
     assertTrue(gotItem2.isEmpty());
   }
 

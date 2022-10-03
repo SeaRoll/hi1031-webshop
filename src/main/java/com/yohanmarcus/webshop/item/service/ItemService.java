@@ -8,5 +8,5 @@ import java.util.List;
 public interface ItemService {
   List<Item> findAll() throws SQLException;
 
-  Item findById(Integer id) throws SQLException;
+  Item findById(String id) throws SQLException;
 }

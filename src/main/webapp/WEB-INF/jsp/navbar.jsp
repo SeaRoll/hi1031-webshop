@@ -1,5 +1,6 @@
 <%@ page import="com.yohanmarcus.webshop.item.domain.Cart" %>
 <%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
+<%@ page import="com.yohanmarcus.webshop.user.domain.UserRole" %>
 <h1>90s Ecommerce</h1>
 <img src="/resources/ia-cat.webp" alt="cat-logo">
 <%
@@ -17,7 +18,7 @@
     <li>
         <a href="/logout">Hello, <%= user.getUsername() %>! Click here to log out</a>
     <li>_______________________________</li>
-    <li><a href="/orders">Orders</a></li>
+    <li><a href="/order">Orders</a></li>
     </li>
     <%} else { %>
     <li>
@@ -25,10 +26,14 @@
     </li>
     <%}%>
 
+    <% if (user != null && !user.getRole().equals(UserRole.USER)) { %>
+    <li>_______________________________</li>
+    <li><a href="/staff/order">Staff - Orders</a></li>
+    <%}%>
+
     <% if (user != null && user.getRole().toString().equals("ADMIN")) { %>
     <li>_______________________________</li>
     <li><a href="#">Admin - Items</a></li>
-    <li><a href="#">Admin - Orders</a></li>
     <li><a href="/admin/users">Admin - Users</a></li>
     <%}%>
 </ul>
