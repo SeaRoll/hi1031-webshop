@@ -1,13 +1,12 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
 import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.service.CartService;
-import com.yohanmarcus.webshop.item.service.CartServiceImpl;
 import com.yohanmarcus.webshop.item.service.ItemService;
-import com.yohanmarcus.webshop.item.service.ItemServiceImpl;
+import lombok.NoArgsConstructor;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,21 +17,17 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+@NoArgsConstructor
 @WebServlet(name = "productServlet", value = "")
 public class ProductController extends HttpServlet {
 
-  private final ItemService itemService;
-  private final CartService cartService;
+  @Inject private ItemService itemService;
+
+  @Inject private CartService cartService;
 
   public ProductController(ItemService itemService, CartService cartService) {
     this.itemService = itemService;
     this.cartService = cartService;
-  }
-
-  public ProductController() {
-    var itemDao = new ItemDaoImpl();
-    itemService = new ItemServiceImpl(itemDao);
-    cartService = new CartServiceImpl(itemDao);
   }
 
   private void processRequest(HttpServletRequest req, HttpServletResponse res)

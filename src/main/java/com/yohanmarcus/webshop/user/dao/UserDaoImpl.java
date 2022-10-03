@@ -3,6 +3,7 @@ package com.yohanmarcus.webshop.user.dao;
 import com.yohanmarcus.webshop.user.domain.User;
 import org.apache.commons.dbutils.QueryRunner;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.UUID;
 import static com.yohanmarcus.webshop.util.DatabaseConfig.closeConnection;
 import static com.yohanmarcus.webshop.util.DatabaseConfig.getConnection;
 
+@ApplicationScoped
 public class UserDaoImpl implements UserDao {
 
   private final UserHandler userHandler = new UserHandler();

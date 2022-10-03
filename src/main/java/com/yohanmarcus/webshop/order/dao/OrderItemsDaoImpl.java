@@ -4,6 +4,7 @@ import com.yohanmarcus.webshop.order.domain.OrderItems;
 import com.yohanmarcus.webshop.order.domain.OrderItemsId;
 import org.apache.commons.dbutils.QueryRunner;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import static com.yohanmarcus.webshop.util.DatabaseConfig.closeConnection;
 import static com.yohanmarcus.webshop.util.DatabaseConfig.getConnection;
 
+@ApplicationScoped
 public class OrderItemsDaoImpl implements OrderItemsDao {
   private final OrderItemsHandler orderItemsHandler = new OrderItemsHandler();
 

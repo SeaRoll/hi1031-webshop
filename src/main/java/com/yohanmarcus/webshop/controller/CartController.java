@@ -1,10 +1,10 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
 import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.service.CartService;
-import com.yohanmarcus.webshop.item.service.CartServiceImpl;
+import lombok.NoArgsConstructor;
 
+import javax.inject.Inject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,14 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
+@NoArgsConstructor
 @WebServlet(name = "cartServlet", value = "/cart")
 public class CartController extends HttpServlet {
 
-  private final CartService cartService;
-
-  public CartController() {
-    cartService = new CartServiceImpl(new ItemDaoImpl());
-  }
+  @Inject private CartService cartService;
 
   public CartController(CartService cartService) {
     this.cartService = cartService;

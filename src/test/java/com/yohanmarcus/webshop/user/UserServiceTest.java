@@ -7,6 +7,7 @@ import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
+import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 class UserServiceTest {
 
-  private final TransactionManager mockTM = mock(TransactionManager.class);
+  private final TransactionFactory mockTM = mock(TransactionFactory.class);
   private final UserDao mockDao = mock(UserDao.class);
   private final UserService userService = new UserServiceImpl(mockDao, mockTM);
 

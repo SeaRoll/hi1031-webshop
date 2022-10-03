@@ -9,7 +9,9 @@ public class TransactionManagerImpl implements TransactionManager {
   private Connection conn;
   private boolean committed;
 
-  public TransactionManagerImpl() {}
+  protected TransactionManagerImpl() {
+    startTransaction();
+  }
 
   /** Begin a transaction */
   private void startTransaction() {
@@ -21,12 +23,6 @@ public class TransactionManagerImpl implements TransactionManager {
       close();
       throw new RuntimeException(e);
     }
-  }
-
-  public TransactionManager begin() {
-    TransactionManagerImpl newTransactionManager = new TransactionManagerImpl();
-    newTransactionManager.startTransaction();
-    return newTransactionManager;
   }
 
   /**
