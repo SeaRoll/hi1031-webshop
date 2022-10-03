@@ -11,4 +11,6 @@ public interface OrderService {
   void orderItems(Cart cart, User user) throws SQLException, IllegalStateException;
 
   List<OrderWithItems> getOrderByUser(User user) throws SQLException;
+
+  List<OrderWithItems> getAllOrders() throws SQLException;
 }

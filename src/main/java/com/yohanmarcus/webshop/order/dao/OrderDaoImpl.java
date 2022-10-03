@@ -24,7 +24,7 @@ public class OrderDaoImpl implements OrderDao {
     try {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
-      return run.query(conn, "SELECT * FROM orders", orderHandler);
+      return run.query(conn, "SELECT * FROM orders order by created_at desc", orderHandler);
     } finally {
       closeConnection(conn, optionalConn);
     }
@@ -111,7 +111,11 @@ public class OrderDaoImpl implements OrderDao {
     try {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
-      return run.query(conn, "SELECT * FROM orders WHERE user_id = ?", orderHandler, userId);
+      return run.query(
+          conn,
+          "SELECT * FROM orders WHERE user_id = ? order by created_at desc",
+          orderHandler,
+          userId);
     } finally {
       closeConnection(conn, optionalConn);
     }

@@ -27,9 +27,10 @@ create type order_status as enum ('PLACED', 'PACKAGING', 'SENT', 'RETURNED');
 -- Create a table if not exists a order table with (id, user_id, status) fields
 create table if not exists orders
 (
-    id      varchar(255) primary key,
-    user_id varchar(255) not null,
-    status  order_status not null,
+    id         varchar(255) primary key,
+    user_id    varchar(255) not null,
+    status     order_status not null,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     foreign key (user_id) references users (id) on delete cascade
 );
 

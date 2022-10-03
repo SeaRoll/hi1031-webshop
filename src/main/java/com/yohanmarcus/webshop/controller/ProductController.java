@@ -4,10 +4,10 @@ import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.service.CartService;
 import com.yohanmarcus.webshop.item.service.ItemService;
+import com.yohanmarcus.webshop.util.JspDispatcher;
 import lombok.NoArgsConstructor;
 
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+
+import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_PRODUCTS_JSP;
 
 @NoArgsConstructor
 @WebServlet(name = "productServlet", value = "")
@@ -30,19 +32,13 @@ public class ProductController extends HttpServlet {
     this.cartService = cartService;
   }
 
-  private void processRequest(HttpServletRequest req, HttpServletResponse res)
-      throws ServletException, IOException {
-    RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/products.jsp");
-    dispatcher.forward(req, res);
-  }
-
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
       List<Item> itemList = itemService.findAll();
       req.setAttribute("items", itemList);
-      processRequest(req, resp);
+      JspDispatcher.processRequest(req, resp, WEB_INF_JSP_PRODUCTS_JSP);
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
