@@ -107,4 +107,25 @@ class OrderServiceTest {
     verify(tm).commit();
     verify(tm).close();
   }
+
+  @Test
+  void testGetOrderAll() throws SQLException {
+    User user = User.of("2", "admin", "admin", UserRole.USER);
+    List<Order> order = List.of(Order.of("2", user.getId(), OrderStatus.PACKAGING));
+    List<OrderItems> orderItems = List.of(OrderItems.of("1", "2", "a", 2, 3, "", ""));
+
+    when(tf.begin()).thenReturn(tm);
+
+    when(orderDao.findAll(null)).thenReturn(order);
+    when(orderItemsDao.findByOrderId(eq("2"), eq(null))).thenReturn(orderItems);
+
+    List<OrderWithItems> orderWithItems = orderService.getAllOrders();
+    var ordWItems = orderWithItems.get(0);
+
+    assertEquals(orderItems, ordWItems.getItems());
+    assertEquals(order.get(0), ordWItems.getOrder());
+
+    verify(tm).commit();
+    verify(tm).close();
+  }
 }

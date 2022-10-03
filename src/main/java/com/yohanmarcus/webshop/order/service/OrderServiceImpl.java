@@ -107,4 +107,21 @@ public class OrderServiceImpl implements OrderService {
       tm.close();
     }
   }
+
+  @Override
+  public List<OrderWithItems> getAllOrders() throws SQLException {
+    TransactionManager tm = transactionFactory.begin();
+    try {
+      List<OrderWithItems> orderWithItems = new ArrayList<>();
+      var orders = orderDao.findAll(tm.getConn());
+      for (var order : orders) {
+        orderWithItems.add(
+            OrderWithItems.of(order, orderItemsDao.findByOrderId(order.getId(), tm.getConn())));
+      }
+      tm.commit();
+      return orderWithItems;
+    } finally {
+      tm.close();
+    }
+  }
 }

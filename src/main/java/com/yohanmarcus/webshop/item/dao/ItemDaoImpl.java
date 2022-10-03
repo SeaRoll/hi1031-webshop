@@ -25,7 +25,7 @@ public class ItemDaoImpl implements ItemDao {
       conn = getConnection(optionalConn);
       QueryRunner run = new QueryRunner();
 
-      return run.query(conn, "SELECT * FROM items", itemHandler);
+      return run.query(conn, "SELECT * FROM items order by name asc", itemHandler);
     } finally {
       closeConnection(conn, optionalConn);
     }
