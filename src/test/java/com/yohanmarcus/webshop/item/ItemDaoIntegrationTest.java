@@ -19,14 +19,14 @@ class ItemDaoIntegrationTest extends IntegrationTest {
 
   @BeforeEach
   void beforeEach() throws SQLException {
-    itemDao.removeAll();
+    itemDao.removeAll(null);
   }
 
   @Test
   void testItemDaoCreate_savesNewItem() throws SQLException {
     Item item = generateNewItem();
-    String id = itemDao.create(item);
-    Item gotItem = itemDao.findById(id).get();
+    String id = itemDao.create(item, null);
+    Item gotItem = itemDao.findById(id, null).get();
     assertEquals(item.getName(), gotItem.getName());
     assertEquals(item.getPrice(), gotItem.getPrice());
     assertEquals(item.getQuantity(), gotItem.getQuantity());
@@ -37,21 +37,21 @@ class ItemDaoIntegrationTest extends IntegrationTest {
   @Test
   void testItemDaoUpdate_updatesExistingItem() throws SQLException {
     Item item = generateNewItem();
-    String id = itemDao.create(item);
-    Item gotItem = itemDao.findById(id).get();
+    String id = itemDao.create(item, null);
+    Item gotItem = itemDao.findById(id, null).get();
     gotItem.setCategory("bruv");
-    itemDao.update(gotItem);
-    Item gotItem2 = itemDao.findById(gotItem.getId()).get();
+    itemDao.update(gotItem, null);
+    Item gotItem2 = itemDao.findById(gotItem.getId(), null).get();
     assertEquals("bruv", gotItem2.getCategory());
   }
 
   @Test
   void testItemDaoRemove_deletesItem() throws SQLException {
     Item item = generateNewItem();
-    String id = itemDao.create(item);
-    Item gotItem = itemDao.findById(id).get();
-    itemDao.removeById(gotItem.getId());
-    Optional<Item> gotItem2 = itemDao.findById(gotItem.getId());
+    String id = itemDao.create(item, null);
+    Item gotItem = itemDao.findById(id, null).get();
+    itemDao.removeById(gotItem.getId(), null);
+    Optional<Item> gotItem2 = itemDao.findById(gotItem.getId(), null);
     assertTrue(gotItem2.isEmpty());
   }
 

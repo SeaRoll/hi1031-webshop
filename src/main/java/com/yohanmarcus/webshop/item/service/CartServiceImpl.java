@@ -20,14 +20,14 @@ public class CartServiceImpl implements CartService {
 
   @Override
   public Cart addToCart(String clickedId, Cart cart) throws SQLException {
-    Item newItem = itemDao.findById(clickedId).orElseThrow();
+    Item newItem = itemDao.findById(clickedId, null).orElseThrow();
     cart.addToCart(newItem);
     return cart;
   }
 
   @Override
   public Cart removeFromCart(String clickedId, Cart cart) throws SQLException {
-    Item itemToRemove = itemDao.findById(clickedId).orElseThrow();
+    Item itemToRemove = itemDao.findById(clickedId, null).orElseThrow();
     cart.removeFromCart(itemToRemove);
     return cart;
   }

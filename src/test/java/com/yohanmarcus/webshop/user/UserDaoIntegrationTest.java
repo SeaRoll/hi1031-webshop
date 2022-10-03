@@ -21,7 +21,7 @@ class UserDaoIntegrationTest extends IntegrationTest {
 
   @BeforeEach
   void beforeEach() throws SQLException {
-    userDao.removeAll();
+    userDao.removeAll(null);
   }
 
   private User generateUser() {
@@ -36,18 +36,18 @@ class UserDaoIntegrationTest extends IntegrationTest {
   @Test
   void testUserFindAll_returnsAllUsers() throws SQLException {
     for (int i = 0; i < 100; i++) {
-      userDao.create(generateRandomUser());
+      userDao.create(generateRandomUser(), null);
     }
-    assertEquals(100, userDao.findAll().size());
+    assertEquals(100, userDao.findAll(null).size());
   }
 
   @Test
   void testUserDaoUpdate_updatesExistingItem() throws SQLException {
     User user = generateUser();
-    userDao.create(user);
+    userDao.create(user, null);
     User gotUser = userDao.findByUsername(user.getUsername()).get();
     gotUser.setRole(UserRole.USER);
-    userDao.update(gotUser);
+    userDao.update(gotUser, null);
     gotUser = userDao.findByUsername(user.getUsername()).get();
     assertEquals(UserRole.USER, gotUser.getRole());
   }
@@ -55,11 +55,11 @@ class UserDaoIntegrationTest extends IntegrationTest {
   @Test
   void testUserDaoRemove_deletesItem() throws SQLException {
     User user = generateUser();
-    userDao.create(user);
+    userDao.create(user, null);
     User gotUser = userDao.findByUsername(user.getUsername()).get();
 
-    userDao.removeById(gotUser.getId());
-    Optional<User> gotUser2 = userDao.findById(gotUser.getId());
+    userDao.removeById(gotUser.getId(), null);
+    Optional<User> gotUser2 = userDao.findById(gotUser.getId(), null);
     assertTrue(gotUser2.isEmpty());
   }
 }

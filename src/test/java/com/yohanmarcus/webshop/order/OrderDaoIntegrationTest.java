@@ -25,36 +25,36 @@ class OrderDaoIntegrationTest extends IntegrationTest {
 
   @BeforeEach
   void beforeEach() throws SQLException {
-    orderDao.removeAll();
-    userDao.removeAll();
-    userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN));
+    orderDao.removeAll(null);
+    userDao.removeAll(null);
+    userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN), null);
   }
 
   @Test
   void testOrderDaoCreate_savesNewItem() throws SQLException {
     Order order = Order.of(null, userId, OrderStatus.PLACED);
-    String id = orderDao.create(order);
+    String id = orderDao.create(order, null);
     order.setId(id);
-    Order gotOrder = orderDao.findById(id).get();
+    Order gotOrder = orderDao.findById(id, null).get();
     assertEquals(order, gotOrder);
   }
 
   @Test
   void testOrderDaoUpdate() throws SQLException {
     Order order = Order.of(null, userId, OrderStatus.PLACED);
-    String id = orderDao.create(order);
+    String id = orderDao.create(order, null);
     order.setId(id);
     order.setStatus(OrderStatus.PACKAGING);
-    orderDao.update(order);
-    Order gotOrder = orderDao.findById(id).get();
+    orderDao.update(order, null);
+    Order gotOrder = orderDao.findById(id, null).get();
     assertEquals(order, gotOrder);
   }
 
   @Test
   void testOrderDaoDelete() throws SQLException {
     Order order = Order.of(null, userId, OrderStatus.PLACED);
-    String id = orderDao.create(order);
-    orderDao.removeById(id);
-    assertTrue(orderDao.findById(id).isEmpty());
+    String id = orderDao.create(order, null);
+    orderDao.removeById(id, null);
+    assertTrue(orderDao.findById(id, null).isEmpty());
   }
 }
