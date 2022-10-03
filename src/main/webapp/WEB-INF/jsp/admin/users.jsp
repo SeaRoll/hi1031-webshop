@@ -12,38 +12,38 @@
 %>
 
 <main>
-    <form action="/admin/users" method="POST">
-        <h2>Users</h2>
-        <table style="width: 100%;">
-            <thead style="text-align: left;">
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-            </tr>
-            </thead>
-            <tbody>
+    <h2>Users</h2>
+    <table style="width: 100%;">
+        <tbody>
 
-            <%
-                for (User user : userList) {
-            %>
-            <tr>
-                <td>
-                    <%= user.getId() %>
-                </td>
-                <td>
-                    $<%= user.getUsername() %>
-                </td>
-                <td>
-                    <%= user.getRole() %>
-                </td>
-            </tr>
-            <%
-                }
-            %>
-            </tbody>
-        </table>
-    </form>
+        <%
+            for (User user : userList) {
+        %>
+        <form action="/admin/users" method="post">
+
+            <label for="id">ID:</label>
+            <input type="text" id="id" disabled value="<%= user.getId() %>">
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="<%= user.getUsername() %>">
+
+            <label for="role">Role:</label>
+            <select name="role" id="role">
+                <option value="<%= user.getRole() %>" disabled selected><%= user.getRole() %>
+                </option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="STAFF">STAFF</option>
+                <option value="USER">USER</option>
+            </select>
+
+            <input type="submit" value="Register changes">
+            <br><br>
+        </form>
+
+        <%
+            }
+        %>
+        </tbody>
+    </table>
 </main>
 
 <jsp:include page="../footer.jsp"/>

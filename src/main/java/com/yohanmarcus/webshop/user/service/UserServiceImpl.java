@@ -73,12 +73,35 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<User> findAll() throws SQLException {
-    return userDao.findAll();
+  public void updateUser(String id, String username, UserRole role) throws SQLException {
+    TransactionManager tm = transactionFactory.begin();
+    try {
+      // check that username is unique
+      Optional<User> userFromUsername = userDao.findByUsername(username, tm.getConn());
+      if (!userFromUsername.get().getId().equals(id))
+        throw new InvalidFormException("Username is not unique");
+
+      // update user
+      User updatedUser =
+          User.of(id, username, userDao.findById(id, tm.getConn()).get().getPassword(), role);
+      userDao.update(updatedUser, tm.getConn());
+
+      // commit
+      tm.commit();
+    } finally {
+      tm.close();
+    }
   }
 
   @Override
-  public User findById(Integer id) throws SQLException {
-    return userDao.findById(id).orElseThrow(() -> new IllegalStateException("Does not exist!"));
+  public List<User> findAll() throws SQLException {
+    return userDao.findAll(null);
+  }
+
+  @Override
+  public User findById(String id) throws SQLException {
+    return userDao
+        .findById(id, null)
+        .orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
 }

@@ -1,6 +1,7 @@
 package com.yohanmarcus.webshop.user.service;
 
 import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.user.form.UserForm;
 
 import java.sql.SQLException;
@@ -41,5 +42,15 @@ public interface UserService {
    * @return user
    * @throws SQLException sql error
    */
-  User findById(Integer id) throws SQLException;
+  User findById(String id) throws SQLException;
+
+  /**
+   * Updates user values
+   *
+   * @param id user id
+   * @param username user name
+   * @param role user role
+   * @throws SQLException sql error
+   */
+  public void updateUser(String id, String username, UserRole role) throws SQLException;
 }
