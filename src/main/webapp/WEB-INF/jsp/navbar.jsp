@@ -29,7 +29,7 @@
     <li>_______________________________</li>
     <li><a href="#">Admin - Items</a></li>
     <li><a href="#">Admin - Orders</a></li>
-    <li><a href="#">Admin - Users</a></li>
+    <li><a href="/admin/users">Admin - Users</a></li>
     <%}%>
 </ul>
 <hr>

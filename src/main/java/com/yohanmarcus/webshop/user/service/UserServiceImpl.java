@@ -8,6 +8,7 @@ import com.yohanmarcus.webshop.user.dto.UserForm;
 import com.yohanmarcus.webshop.util.TransactionManager;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -64,5 +65,15 @@ public class UserServiceImpl implements UserService {
     } finally {
       tm.close();
     }
+  }
+
+  @Override
+  public List<User> findAll() throws SQLException {
+    return userDao.findAll();
+  }
+
+  @Override
+  public User findById(Integer id) throws SQLException {
+    return userDao.findById(id).orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
 }
