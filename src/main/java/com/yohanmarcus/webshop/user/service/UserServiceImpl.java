@@ -76,6 +76,8 @@ public class UserServiceImpl implements UserService {
   public void updateUser(String id, String username, UserRole role) throws SQLException {
     TransactionManager tm = transactionFactory.begin();
     try {
+      User oldUser = userDao.findById(id, tm.getConn()).get();
+
       // check that username is unique
       Optional<User> userFromUsername = userDao.findByUsername(username, tm.getConn());
       if (userFromUsername.isPresent())
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
           throw new InvalidFormException("Username is not unique");
 
       // update user
-      User updatedUser = User.of(id, username, userFromUsername.get().getPassword(), role);
+      User updatedUser = User.of(id, username, oldUser.getPassword(), role);
       userDao.update(updatedUser, tm.getConn());
 
       // commit

@@ -17,8 +17,7 @@
 </h2>
 <form action="/admin/users/change" method="POST">
 
-    <label for="id">ID:</label>
-    <input type="text" id="id" name="id" disabled value="<%= user.getId() %>">
+    <input type="hidden" id="id" name="id" value="<%= user.getId() %>">
 
     <label for="username">Username</label>
     <input type="text" id="username" name="username" value="<%= user.getUsername() %>">
@@ -30,8 +29,7 @@
         <option value="USER" <%= user.getRole().equals(UserRole.USER) ? "selected" : "" %>>USER</option>
     </select>
 
-    <button type="submit">Edit
-    </button>
+    <button type="submit">Edit</button>
 </form>
 
 <jsp:include page="footer.jsp"/>

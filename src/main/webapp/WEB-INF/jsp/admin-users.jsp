@@ -41,7 +41,6 @@
                 <a href="/admin/users/delete?id=<%= user.getId() %>">Delete</a>
             </td>
         </tr>
-        <br><br>
         <%
             }
         %>
