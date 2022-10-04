@@ -1,7 +1,6 @@
-package com.yohanmarcus.webshop.controller;
+package com.yohanmarcus.webshop.controller.admin;
 
 import com.yohanmarcus.webshop.user.domain.User;
-import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.user.service.UserService;
 import lombok.NoArgsConstructor;
 
@@ -20,11 +19,11 @@ import static com.yohanmarcus.webshop.util.JspDispatcher.processRequest;
 
 @NoArgsConstructor
 @WebServlet(name = "userServlet", value = "/admin/users")
-public class UserController extends HttpServlet {
+public class AdminUserController extends HttpServlet {
 
   @Inject private UserService userService;
 
-  public UserController(UserService userService) {
+  public AdminUserController(UserService userService) {
     this.userService = userService;
   }
 
@@ -37,27 +36,6 @@ public class UserController extends HttpServlet {
       processRequest(req, res, WEB_INF_JSP_ADMIN_USERS_JSP);
     } catch (SQLException e) {
       throw new RuntimeException(e);
-    }
-  }
-
-  @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse res)
-      throws ServletException, IOException {
-    try {
-      String id = req.getParameter("id");
-      String username = req.getParameter("username");
-      UserRole role = UserRole.valueOf(req.getParameter("role"));
-      userService.updateUser(id, username, role);
-
-      //      req.getSession().setAttribute("id", id);
-      //      req.getSession().setAttribute("username", username);
-      //      req.getSession().setAttribute("role", role);
-
-      res.sendRedirect("/");
-    } catch (Exception e) {
-      e.printStackTrace();
-      req.setAttribute("error", e.getMessage());
-      processRequest(req, res, WEB_INF_JSP_ADMIN_USERS_JSP);
     }
   }
 }

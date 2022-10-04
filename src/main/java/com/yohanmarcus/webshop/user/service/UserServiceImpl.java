@@ -78,12 +78,12 @@ public class UserServiceImpl implements UserService {
     try {
       // check that username is unique
       Optional<User> userFromUsername = userDao.findByUsername(username, tm.getConn());
-      if (!userFromUsername.get().getId().equals(id))
-        throw new InvalidFormException("Username is not unique");
+      if (userFromUsername.isPresent())
+        if (!userFromUsername.get().getId().equals(id))
+          throw new InvalidFormException("Username is not unique");
 
       // update user
-      User updatedUser =
-          User.of(id, username, userDao.findById(id, tm.getConn()).get().getPassword(), role);
+      User updatedUser = User.of(id, username, userFromUsername.get().getPassword(), role);
       userDao.update(updatedUser, tm.getConn());
 
       // commit
@@ -91,6 +91,11 @@ public class UserServiceImpl implements UserService {
     } finally {
       tm.close();
     }
+  }
+
+  @Override
+  public void removeById(String id) throws SQLException {
+    userDao.removeById(id, null);
   }
 
   @Override
