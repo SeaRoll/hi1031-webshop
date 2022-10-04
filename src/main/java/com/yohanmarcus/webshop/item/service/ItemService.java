@@ -9,4 +9,10 @@ public interface ItemService {
   List<Item> findAll() throws SQLException;
 
   Item findById(String id) throws SQLException;
+
+  void removeById(String id) throws SQLException;
+
+  void create(Item item) throws SQLException;
+
+  void update(Item item) throws SQLException;
 }

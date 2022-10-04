@@ -12,8 +12,10 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ItemServiceTest {
@@ -41,5 +43,25 @@ class ItemServiceTest {
   void testFindOne_givesErrorOnWrongParameter() throws SQLException {
     when(mockDao.findById(eq("1"), eq(null))).thenReturn(Optional.empty());
     assertThrows(IllegalStateException.class, () -> itemService.findById("1"));
+  }
+
+  @Test
+  void testSaveCallsDao() throws SQLException {
+    Item save = Item.of("1", "test", 2, 3, "", "");
+    itemService.create(save);
+    verify(mockDao).create(any(), any());
+  }
+
+  @Test
+  void testUpdateCallsDao() throws SQLException {
+    Item save = Item.of("1", "test", 2, 3, "", "");
+    itemService.update(save);
+    verify(mockDao).update(any(), any());
+  }
+
+  @Test
+  void testRemoveByIdCallsDao() throws SQLException {
+    itemService.removeById("2");
+    verify(mockDao).removeById(eq("2"), any());
   }
 }
