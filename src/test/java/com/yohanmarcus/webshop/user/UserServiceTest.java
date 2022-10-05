@@ -18,9 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
@@ -125,5 +123,33 @@ class UserServiceTest {
     assertEquals(UserRole.USER, userDto.getRole());
 
     verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_successfulUsernameChange() throws SQLException {
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findById(eq("1"), any()))
+        .thenReturn(Optional.of(User.of("1", "tester", "qwerty123456", UserRole.USER)));
+
+    userService.updateUser("1", "tester", UserRole.USER);
+
+    verify(tm).commit();
+
+    assertEquals(mockDao.findById("1", tm.getConn()).get().getUsername(), "tester");
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_notUniquelUsernameChange() throws SQLException {}
+
+  @Test
+  void testUpdateUser_changedRole() throws SQLException {}
+
+  @Test
+  void testRemoveUserById() throws SQLException {
+    userService.removeById("random-admin-id");
+    verify(mockDao).removeById(eq("random-admin-id"), any());
   }
 }
