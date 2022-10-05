@@ -47,7 +47,6 @@
         </tbody>
     </table>
     <br><br>
-    <%--    <a href="/admin/users/change">Create new user</a>--%>
 </main>
 
 <jsp:include page="footer.jsp"/>

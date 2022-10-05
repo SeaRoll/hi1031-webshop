@@ -52,7 +52,7 @@ public interface UserService {
    * @param role user role
    * @throws SQLException sql error
    */
-  public void updateUser(String id, String username, UserRole role) throws SQLException;
+  void updateUser(String id, String username, UserRole role) throws SQLException;
 
   /**
    * Removes a user by id
@@ -60,5 +60,5 @@ public interface UserService {
    * @param id user id
    * @throws SQLException sql error
    */
-  public void removeById(String id) throws SQLException;
+  void removeById(String id) throws SQLException;
 }

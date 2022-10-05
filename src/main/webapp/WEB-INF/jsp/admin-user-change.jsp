@@ -24,9 +24,10 @@
 
     <label for="role">Role:</label>
     <select name="role" id="role">
-        <option value="ADMIN" <%= user.getRole().equals(UserRole.ADMIN) ? "selected" : "" %> >ADMIN</option>
-        <option value="STAFF" <%= user.getRole().equals(UserRole.STAFF) ? "selected" : "" %>>STAFF</option>
-        <option value="USER" <%= user.getRole().equals(UserRole.USER) ? "selected" : "" %>>USER</option>
+        <% for (UserRole role : UserRole.values()) { %>
+        <option value="<%= role.toString() %>" <%= user.getRole().equals(role) ? "selected" : "" %>><%= role.toString() %>
+        </option>
+        <% } %>
     </select>
 
     <button type="submit">Edit</button>

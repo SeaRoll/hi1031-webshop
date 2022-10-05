@@ -12,13 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_ADMIN_USER_CHANGE_JSP;
 import static com.yohanmarcus.webshop.util.JspDispatcher.processRequest;
 
 @NoArgsConstructor
-@WebServlet(name = "userChangeServlet", value = "/admin/users/change")
+@WebServlet(name = "adminUserChangeServlet", value = "/admin/users/change")
 public class AdminUserChangeController extends HttpServlet {
 
   @Inject private UserService userService;
@@ -35,9 +34,11 @@ public class AdminUserChangeController extends HttpServlet {
       if (id != null) {
         User user = userService.findById(id);
         req.setAttribute("user", user);
-      }
+      } else
+        throw new IllegalStateException(
+            "Parameter id was empty, so the user could not be fetched!");
       processRequest(req, resp, WEB_INF_JSP_ADMIN_USER_CHANGE_JSP);
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
