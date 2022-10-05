@@ -11,6 +11,7 @@ import com.yohanmarcus.webshop.util.TransactionManager;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -69,5 +70,45 @@ public class UserServiceImpl implements UserService {
     } finally {
       tm.close();
     }
+  }
+
+  @Override
+  public void updateUser(String id, String username, UserRole role) throws SQLException {
+    TransactionManager tm = transactionFactory.begin();
+    try {
+      User oldUser = userDao.findById(id, tm.getConn()).get();
+
+      // check that username is unique
+      Optional<User> userFromUsername = userDao.findByUsername(username, tm.getConn());
+      if (userFromUsername.isPresent())
+        if (!userFromUsername.get().getId().equals(id))
+          throw new InvalidFormException("Username is not unique");
+
+      // update user
+      User updatedUser = User.of(id, username, oldUser.getPassword(), role);
+      userDao.update(updatedUser, tm.getConn());
+
+      // commit
+      tm.commit();
+    } finally {
+      tm.close();
+    }
+  }
+
+  @Override
+  public void removeById(String id) throws SQLException {
+    userDao.removeById(id, null);
+  }
+
+  @Override
+  public List<User> findAll() throws SQLException {
+    return userDao.findAll(null);
+  }
+
+  @Override
+  public User findById(String id) throws SQLException {
+    return userDao
+        .findById(id, null)
+        .orElseThrow(() -> new IllegalStateException("Does not exist!"));
   }
 }

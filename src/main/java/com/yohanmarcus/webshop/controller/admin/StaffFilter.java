@@ -3,11 +3,7 @@ package com.yohanmarcus.webshop.controller.admin;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +11,9 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = "/staff/*")
 public class StaffFilter implements Filter {
+
+  @Override
+  public void init(FilterConfig filterConfig) throws ServletException {}
 
   @Override
   public void doFilter(
@@ -31,4 +30,7 @@ public class StaffFilter implements Filter {
 
     filterChain.doFilter(servletRequest, servletResponse);
   }
+
+  @Override
+  public void destroy() {}
 }

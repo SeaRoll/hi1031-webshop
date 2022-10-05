@@ -33,8 +33,8 @@
 
     <% if (user != null && user.getRole().toString().equals("ADMIN")) { %>
     <li>_______________________________</li>
+    <li><a href="/admin/users">Admin - Users</a></li>
     <li><a href="/admin/item">Admin - Items</a></li>
-    <li><a href="#">Admin - Users</a></li>
     <%}%>
 </ul>
 <hr>

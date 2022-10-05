@@ -12,15 +12,14 @@ import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
@@ -125,5 +124,69 @@ class UserServiceTest {
     assertEquals(UserRole.USER, userDto.getRole());
 
     verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_successfulUsernameChange() throws SQLException {
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findById(eq("1"), any()))
+        .thenReturn(Optional.of(User.of("1", "tester", "qwerty123456", UserRole.USER)));
+
+    userService.updateUser("1", "tester", UserRole.USER);
+
+    verify(mockDao).update(eq(User.of("1", "tester", "qwerty123456", UserRole.USER)), any());
+
+    verify(tm).commit();
+    verify(tm).close();
+  }
+
+  @Test
+  void testUpdateUser_notUniqueUsernameChange() throws SQLException {
+    TransactionManager tm = mock(TransactionManager.class);
+    when(mockTM.begin()).thenReturn(tm);
+    when(mockDao.findById(eq("1"), any()))
+        .thenReturn(Optional.of(User.of("1", "test", "qwerty123456", UserRole.USER)));
+    when(mockDao.findByUsername(eq("tester"), any()))
+        .thenReturn(Optional.of(User.of("2", "tester", "123456789", UserRole.STAFF)));
+
+    assertThrows(
+        InvalidFormException.class, () -> userService.updateUser("1", "tester", UserRole.USER));
+
+    verify(tm).close();
+  }
+
+  @Test
+  void testRemoveUserById() throws SQLException {
+    userService.removeById("random-admin-id");
+    verify(mockDao).removeById(eq("random-admin-id"), any());
+  }
+
+  @Test
+  void testFindAll() throws SQLException {
+    when(mockDao.findAll(null))
+        .thenReturn(
+            List.of(
+                User.of("1", "guy1", "passguy1", UserRole.STAFF),
+                User.of("2", "guy2", "passguy2", UserRole.USER)));
+    List<User> users = userService.findAll();
+    assertEquals(2, users.size());
+  }
+
+  @Test
+  void testFindById_successful() throws SQLException {
+    when(mockDao.findById(eq("1"), eq(null)))
+        .thenReturn(Optional.of(User.of("1", "test", "qwerty123456", UserRole.USER)));
+
+    User user = userService.findById("1");
+
+    assertEquals(user.getId(), "1");
+  }
+
+  @Test
+  void testFindById_unsuccessful() throws SQLException {
+    when(mockDao.findById(eq("1"), eq(null))).thenReturn(Optional.empty());
+
+    assertThrows(IllegalStateException.class, () -> userService.findById("1"));
   }
 }
