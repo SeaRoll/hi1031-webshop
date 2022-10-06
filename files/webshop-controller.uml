@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/searoll/Documents/Programming/web/webshop/src/main/java/com/yohanmarcus/webshop/controller</OriginalElement>
+  <nodes>
+    <node x="1468.0" y="843.0">com.yohanmarcus.webshop.controller.CartFilter</node>
+    <node x="1463.0" y="-62.0">com.yohanmarcus.webshop.controller.admin.AdminItemDeleteController</node>
+    <node x="157.0" y="1214.0">com.yohanmarcus.webshop.controller.admin.StaffFilter</node>
+    <node x="157.0" y="260.0">com.yohanmarcus.webshop.controller.CartController</node>
+    <node x="1522.5" y="1020.5">com.yohanmarcus.webshop.util.JspDispatcher</node>
+    <node x="1026.0" y="653.0">com.yohanmarcus.webshop.controller.LoginController</node>
+    <node x="1087.0" y="1214.0">com.yohanmarcus.webshop.controller.LogoutController</node>
+    <node x="622.0" y="1214.0">com.yohanmarcus.webshop.controller.admin.AdminFilter</node>
+    <node x="157.0" y="-62.0">com.yohanmarcus.webshop.controller.ProductController</node>
+    <node x="1463.0" y="653.0">com.yohanmarcus.webshop.controller.admin.AdminUserController</node>
+    <node x="1895.0" y="653.0">com.yohanmarcus.webshop.controller.admin.AdminUserChangeController</node>
+    <node x="594.0" y="1024.0">com.yohanmarcus.webshop.controller.admin.StaffOrderController</node>
+    <node x="905.5" y="-243.0">com.yohanmarcus.webshop.item.service.ItemService</node>
+    <node x="157.0" y="1024.0">com.yohanmarcus.webshop.controller.OrderController</node>
+    <node x="1026.0" y="1024.0">com.yohanmarcus.webshop.controller.admin.StaffOrderEditController</node>
+    <node x="157.0" y="653.0">com.yohanmarcus.webshop.controller.RegisterController</node>
+    <node x="594.0" y="653.0">com.yohanmarcus.webshop.controller.admin.AdminUserDeleteController</node>
+    <node x="594.0" y="-62.0">com.yohanmarcus.webshop.controller.admin.AdminItemChangeController</node>
+    <node x="222.0" y="145.0">com.yohanmarcus.webshop.item.service.CartService</node>
+    <node x="1070.0" y="450.0">com.yohanmarcus.webshop.user.service.UserService</node>
+    <node x="623.5" y="843.0">com.yohanmarcus.webshop.order.service.OrderService</node>
+    <node x="1031.0" y="-62.0">com.yohanmarcus.webshop.controller.admin.AdminItemController</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.yohanmarcus.webshop.controller.admin.AdminUserDeleteController" target="com.yohanmarcus.webshop.user.service.UserService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="790.0" y="633.0" />
+      <point x="1224.5" y="633.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.ProductController" target="com.yohanmarcus.webshop.item.service.CartService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.StaffOrderController" target="com.yohanmarcus.webshop.order.service.OrderService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.LoginController" target="com.yohanmarcus.webshop.user.service.UserService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.AdminUserController" target="com.yohanmarcus.webshop.user.service.UserService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="1659.0" y="633.0" />
+      <point x="1224.5" y="633.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.OrderController" target="com.yohanmarcus.webshop.order.service.OrderService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="355.5" y="1004.0" />
+      <point x="790.0" y="1004.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.AdminItemDeleteController" target="com.yohanmarcus.webshop.item.service.ItemService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="1659.0" y="-82.0" />
+      <point x="1006.0" y="-82.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.RegisterController" target="com.yohanmarcus.webshop.user.service.UserService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="355.5" y="633.0" />
+      <point x="1224.5" y="633.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.StaffOrderEditController" target="com.yohanmarcus.webshop.order.service.OrderService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="1224.5" y="1004.0" />
+      <point x="790.0" y="1004.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.CartController" target="com.yohanmarcus.webshop.item.service.CartService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.AdminItemController" target="com.yohanmarcus.webshop.item.service.ItemService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="1227.0" y="-82.0" />
+      <point x="1006.0" y="-82.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.AdminUserChangeController" target="com.yohanmarcus.webshop.user.service.UserService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="2093.5" y="633.0" />
+      <point x="1224.5" y="633.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.admin.AdminItemChangeController" target="com.yohanmarcus.webshop.item.service.ItemService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="792.5" y="-82.0" />
+      <point x="1006.0" y="-82.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="com.yohanmarcus.webshop.controller.ProductController" target="com.yohanmarcus.webshop.item.service.ItemService" relationship="TO_ONE">
+      <point x="0.0" y="0.0" />
+      <point x="355.5" y="-82.0" />
+      <point x="1006.0" y="-82.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Generic" zoom="0.776730844879993" showDependencies="true" x="1439.1851292775516" y="1014.8858142486537" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

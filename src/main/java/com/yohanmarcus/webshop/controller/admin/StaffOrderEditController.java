@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_ADMIN_ORDER_CHANGE_JSP;
 import static com.yohanmarcus.webshop.util.JspDispatcher.processRequest;
@@ -47,7 +46,7 @@ public class StaffOrderEditController extends HttpServlet {
       OrderStatus orderStatus = OrderStatus.valueOf(req.getParameter("status"));
       orderService.updateOrderStatus(id, orderStatus);
       resp.sendRedirect("/staff/order");
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }

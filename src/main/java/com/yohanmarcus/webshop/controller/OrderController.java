@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_CART_JSP;
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_ORDER_JSP;
@@ -39,7 +38,7 @@ public class OrderController extends HttpServlet {
     try {
       req.setAttribute("orders", orderService.getOrderByUser(user));
       processRequest(req, resp, WEB_INF_JSP_ORDER_JSP);
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }

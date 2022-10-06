@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @NoArgsConstructor
 @WebServlet(name = "adminItemDeleteServlet", value = "/admin/item/delete")
@@ -28,7 +27,7 @@ public class AdminItemDeleteController extends HttpServlet {
       String id = req.getParameter("id");
       itemService.removeById(id);
       resp.sendRedirect("/admin/item");
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }

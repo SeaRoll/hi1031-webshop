@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_PRODUCTS_JSP;
@@ -39,7 +38,7 @@ public class ProductController extends HttpServlet {
       List<Item> itemList = itemService.findAll();
       req.setAttribute("items", itemList);
       JspDispatcher.processRequest(req, resp, WEB_INF_JSP_PRODUCTS_JSP);
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
@@ -51,7 +50,7 @@ public class ProductController extends HttpServlet {
       Cart cart = (Cart) req.getSession().getAttribute("cart");
       cart = cartService.addToCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);
-    } catch (SQLException e) {
+    } catch (Exception e) {
       e.printStackTrace();
     } finally {
       resp.sendRedirect("/");

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_ADMIN_ORDER_JSP;
 import static com.yohanmarcus.webshop.util.JspDispatcher.processRequest;
@@ -31,7 +30,7 @@ public class StaffOrderController extends HttpServlet {
       var orderWithItems = orderService.getAllOrders();
       req.setAttribute("orders", orderWithItems);
       processRequest(req, resp, WEB_INF_JSP_ADMIN_ORDER_JSP);
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }

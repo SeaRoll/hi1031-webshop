@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_CART_JSP;
 import static com.yohanmarcus.webshop.util.JspDispatcher.processRequest;
@@ -39,7 +38,7 @@ public class CartController extends HttpServlet {
       cart = cartService.removeFromCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);
       resp.sendRedirect("/cart");
-    } catch (SQLException e) {
+    } catch (Exception e) {
       throw new RuntimeException(e);
     }
   }
