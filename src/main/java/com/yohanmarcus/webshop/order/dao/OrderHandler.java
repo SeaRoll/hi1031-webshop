@@ -8,6 +8,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Order handler to map orders in database to java object */
 public class OrderHandler extends BeanListHandler<Order> {
   public OrderHandler() {
     super(Order.class, new BasicRowProcessor(new BeanProcessor(getColumnsToFieldsMap())));

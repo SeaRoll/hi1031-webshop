@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** User domain object. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")

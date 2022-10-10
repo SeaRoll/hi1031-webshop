@@ -15,10 +15,12 @@ public class Item {
   private String description;
   private String category;
 
+  /** Increase quantity */
   public void decreaseQuantity() {
     quantity--;
   }
 
+  /** Decrease quantity */
   public void increaseQuantity() {
     quantity++;
   }

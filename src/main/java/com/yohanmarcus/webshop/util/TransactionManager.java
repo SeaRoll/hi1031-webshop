@@ -3,6 +3,7 @@ package com.yohanmarcus.webshop.util;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/** Manages a transaction. */
 public interface TransactionManager {
 
   /**
@@ -12,7 +13,10 @@ public interface TransactionManager {
    */
   void commit() throws SQLException;
 
-  /** Closes a transaction connection. */
+  /**
+   * Closes a transaction. if the commit is called before, it will just close the connection.
+   * However, if the transaction was not committed, it will rollback to start point
+   */
   void close();
 
   /**

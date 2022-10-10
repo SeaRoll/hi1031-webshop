@@ -8,6 +8,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Maps a user object to database entity and vice versa */
 public class UserHandler extends BeanListHandler<User> {
   public UserHandler() {
     super(User.class, new BasicRowProcessor(new BeanProcessor(getColumnsToFieldsMap())));

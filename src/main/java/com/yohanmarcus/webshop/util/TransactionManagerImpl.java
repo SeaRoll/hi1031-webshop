@@ -25,36 +25,23 @@ public class TransactionManagerImpl implements TransactionManager {
     }
   }
 
-  /**
-   * Commits a transaction
-   *
-   * @throws SQLException sql error
-   */
   public void commit() throws SQLException {
     conn.commit();
     committed = true;
   }
 
-  /** Closes a transaction connection. */
   public void close() {
     if (conn == null) return;
     try {
       if (!committed) {
-        System.out.println("commit was false, rolling back");
         conn.rollback();
       }
       conn.close();
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println("Tried to close, but failed");
     }
   }
 
-  /**
-   * Get connection
-   *
-   * @return a connection
-   */
   public Connection getConn() {
     return conn;
   }
