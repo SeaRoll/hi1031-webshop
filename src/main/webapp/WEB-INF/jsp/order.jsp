@@ -19,6 +19,9 @@
     <h3>
         Order <%= order.getOrder().getId() %>
     </h3>
+    <p>
+        Status: <%= order.getOrder().getStatus() %>
+    </p>
     <table style="width: 100%;">
         <thead style="text-align: left;">
         <tr>
