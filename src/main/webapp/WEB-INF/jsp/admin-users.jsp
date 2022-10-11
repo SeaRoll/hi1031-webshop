@@ -30,7 +30,7 @@
                 <%= user.getId() %>
             </td>
             <td>
-                $<%= user.getUsername() %>
+                <%= user.getUsername() %>
             </td>
             <td>
                 <%= user.getRole() %>
