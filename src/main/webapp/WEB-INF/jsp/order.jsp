@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.yohanmarcus.webshop.order.domain.OrderWithItems" %>
-<%@ page import="com.yohanmarcus.webshop.order.domain.OrderItems" %>
+<%@ page import="com.yohanmarcus.webshop.order.dto.OrderWithItems" %>
+<%@ page import="com.yohanmarcus.webshop.order.dto.OrderItemsDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -33,7 +33,7 @@
         </tr>
         </thead>
         <tbody>
-        <% for (OrderItems item : order.getItems()) { %>
+        <% for (OrderItemsDto item : order.getItems()) { %>
         <tr>
             <td>
                 <%= item.getName() %>

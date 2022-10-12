@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.FilterChain;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -42,7 +43,7 @@ class CartFilterTest {
     HttpServletResponse res = mock(HttpServletResponse.class);
     FilterChain filterChain = mock(FilterChain.class);
     HttpSession session = mock(HttpSession.class);
-    Cart cart = new Cart();
+    CartDto cart = CartDto.from(new ArrayList<>());
 
     when(req.getSession()).thenReturn(session);
     when(session.getAttribute(eq("cart"))).thenReturn(cart);

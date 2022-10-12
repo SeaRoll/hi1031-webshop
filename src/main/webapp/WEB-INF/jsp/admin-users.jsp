@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
+<%@ page import="com.yohanmarcus.webshop.user.dto.UserDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,7 +8,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <%
-    List<User> userList = (List<User>) request.getAttribute("users");
+    List<UserDto> userList = (List<UserDto>) request.getAttribute("users");
 %>
 
 <main>
@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         <%
-            for (User user : userList) {
+            for (UserDto user : userList) {
         %>
         <tr>
             <td>

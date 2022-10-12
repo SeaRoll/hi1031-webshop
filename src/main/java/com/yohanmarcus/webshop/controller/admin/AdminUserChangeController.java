@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.service.UserService;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +32,7 @@ public class AdminUserChangeController extends HttpServlet {
     try {
       String id = req.getParameter("id");
       if (id != null) {
-        User user = userService.findById(id);
+        UserDto user = userService.findById(id);
         req.setAttribute("user", user);
       } else
         throw new IllegalStateException(

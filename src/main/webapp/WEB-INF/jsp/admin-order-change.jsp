@@ -1,6 +1,5 @@
-<%@ page import="com.yohanmarcus.webshop.order.domain.OrderWithItems" %>
-<%@ page import="com.yohanmarcus.webshop.order.domain.Order" %>
-<%@ page import="com.yohanmarcus.webshop.order.domain.OrderStatus" %><%--
+<%@ page import="com.yohanmarcus.webshop.order.domain.OrderStatus" %>
+<%@ page import="com.yohanmarcus.webshop.order.dto.OrderDto" %><%--
   Created by IntelliJ IDEA.
   User: searoll
   Date: 2022-10-03
@@ -9,7 +8,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Order order = (Order) request.getAttribute("order");
+    OrderDto order = (OrderDto) request.getAttribute("order");
 %>
 <html>
 <head>

@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 import com.yohanmarcus.webshop.item.service.ItemService;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class AdminItemChangeControllerTest {
     RequestDispatcher reqDispatch = mock(RequestDispatcher.class);
 
     when(req.getParameter(eq("id"))).thenReturn("1");
-    when(itemService.findById(eq("1"))).thenReturn(Item.of("1", "", 2, 2, "", ""));
+    when(itemService.findById(eq("1"))).thenReturn(ItemDto.from("1", "", 2, 2, "", ""));
     when(req.getRequestDispatcher(eq(WEB_INF_JSP_ADMIN_ITEM_CHANGE_JSP))).thenReturn(reqDispatch);
 
     itemController.doGet(req, res);

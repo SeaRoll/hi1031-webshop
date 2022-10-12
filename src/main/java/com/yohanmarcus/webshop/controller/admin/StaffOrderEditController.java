@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
+import com.yohanmarcus.webshop.order.dto.OrderDto;
 import com.yohanmarcus.webshop.order.service.OrderService;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +30,7 @@ public class StaffOrderEditController extends HttpServlet {
       throws ServletException, IOException {
     try {
       String id = req.getParameter("id");
-      Order order = orderService.getOrderById(id);
+      OrderDto order = orderService.getOrderById(id);
       req.setAttribute("order", order);
       processRequest(req, resp, WEB_INF_JSP_ADMIN_ORDER_CHANGE_JSP);
     } catch (Exception e) {

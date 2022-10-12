@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 import com.yohanmarcus.webshop.item.service.ItemService;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +31,7 @@ public class AdminItemChangeController extends HttpServlet {
     try {
       String id = req.getParameter("id");
       if (id != null) {
-        Item item = itemService.findById(id);
+        ItemDto item = itemService.findById(id);
         req.setAttribute("item", item);
       }
       processRequest(req, resp, WEB_INF_JSP_ADMIN_ITEM_CHANGE_JSP);
@@ -45,8 +45,8 @@ public class AdminItemChangeController extends HttpServlet {
       throws ServletException, IOException {
     try {
       boolean editing = Boolean.parseBoolean(req.getParameter("editing"));
-      Item item =
-          Item.of(
+      ItemDto item =
+          ItemDto.from(
               req.getParameter("id"),
               req.getParameter("name"),
               Integer.parseInt(req.getParameter("price")),

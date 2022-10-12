@@ -3,6 +3,7 @@ package com.yohanmarcus.webshop.controller;
 import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.service.UserMapper;
 import com.yohanmarcus.webshop.user.service.UserService;
 import org.junit.jupiter.api.Test;
 
@@ -59,6 +60,7 @@ class LoginControllerTest {
   @Test
   void testDoPost_redirectsUserOnLogin() throws ServletException, IOException, SQLException {
     User user = User.of(UUID.randomUUID().toString(), "username", "password", UserRole.USER);
+    var dto = UserMapper.toDto(user);
     HttpServletRequest req = mock(HttpServletRequest.class);
     HttpServletResponse res = mock(HttpServletResponse.class);
     HttpSession session = mock(HttpSession.class);
@@ -66,11 +68,11 @@ class LoginControllerTest {
     when(req.getSession()).thenReturn(session);
     when(req.getParameter(eq("username"))).thenReturn("username");
     when(req.getParameter(eq("password"))).thenReturn("password");
-    when(userService.loginUser(any())).thenReturn(user);
+    when(userService.loginUser(any())).thenReturn(dto);
 
     loginController.doPost(req, res);
 
-    verify(session).setAttribute("user", user);
+    verify(session).setAttribute("user", dto);
     verify(res).sendRedirect("/");
   }
 

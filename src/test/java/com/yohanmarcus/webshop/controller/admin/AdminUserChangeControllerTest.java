@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.service.UserService;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_ADMIN_USER_CHANGE_JSP;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AdminUserChangeControllerTest {
 
@@ -29,7 +33,7 @@ public class AdminUserChangeControllerTest {
 
     when(req.getParameter(eq("id"))).thenReturn("random-admin-id");
     when(userService.findById(eq("random-admin-id")))
-        .thenReturn(User.of("random-admin-id", "superadmin", "superadmin", UserRole.ADMIN));
+        .thenReturn(UserDto.from("random-admin-id", "superadmin", UserRole.ADMIN));
     when(req.getRequestDispatcher(eq(WEB_INF_JSP_ADMIN_USER_CHANGE_JSP))).thenReturn(reqDispatch);
 
     userChangeController.doGet(req, res);

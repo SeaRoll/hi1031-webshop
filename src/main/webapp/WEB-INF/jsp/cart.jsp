@@ -1,7 +1,7 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.yohanmarcus.webshop.item.domain.Cart" %>
-<%@ page import="com.yohanmarcus.webshop.item.domain.Item" %>
-<%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
+<%@ page import="com.yohanmarcus.webshop.item.dto.CartDto" %>
+<%@ page import="com.yohanmarcus.webshop.item.dto.ItemDto" %>
+<%@ page import="com.yohanmarcus.webshop.user.dto.UserDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,9 +11,9 @@
 <jsp:include page="navbar.jsp"/>
 <jsp:include page="error.jsp"/>
 <%
-    Cart cart = (Cart) request.getSession().getAttribute("cart");
-    User user = (User) request.getSession().getAttribute("user");
-    List<Item> cartItems = cart.getCartItems();
+    CartDto cart = (CartDto) request.getSession().getAttribute("cart");
+    UserDto user = (UserDto) request.getSession().getAttribute("user");
+    List<ItemDto> cartItems = cart.getItems();
 %>
 
 <main>
@@ -32,7 +32,7 @@
             </thead>
             <tbody>
             <%
-                for (Item item : cartItems) {
+                for (ItemDto item : cartItems) {
             %>
             <tr>
                 <td>

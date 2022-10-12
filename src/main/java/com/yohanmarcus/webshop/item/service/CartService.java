@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.item.service;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 
 import java.sql.SQLException;
 
@@ -13,7 +13,7 @@ public interface CartService {
    * @return updated cart object
    * @throws SQLException sql error
    */
-  Cart addToCart(String clickedId, Cart cart) throws SQLException;
+  CartDto addToCart(String clickedId, CartDto cart) throws SQLException;
 
   /**
    * Removes an item by item id on cart
@@ -23,5 +23,5 @@ public interface CartService {
    * @return updated cart object
    * @throws SQLException sql error
    */
-  Cart removeFromCart(String clickedId, Cart cart) throws SQLException;
+  CartDto removeFromCart(String clickedId, CartDto cart) throws SQLException;
 }

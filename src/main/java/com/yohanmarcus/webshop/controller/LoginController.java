@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import lombok.NoArgsConstructor;
@@ -42,7 +42,7 @@ public class LoginController extends HttpServlet {
       throws ServletException, IOException {
     try {
       UserForm userForm = new UserForm(req.getParameter("username"), req.getParameter("password"));
-      User user = userService.loginUser(userForm);
+      UserDto user = userService.loginUser(userForm);
       req.getSession().setAttribute("user", user);
       res.sendRedirect("/");
     } catch (Exception e) {

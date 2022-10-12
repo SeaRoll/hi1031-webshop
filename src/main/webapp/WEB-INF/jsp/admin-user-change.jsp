@@ -1,9 +1,9 @@
-<%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
 <%@ page import="com.yohanmarcus.webshop.user.domain.UserRole" %>
+<%@ page import="com.yohanmarcus.webshop.user.dto.UserDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    User user = (User) request.getAttribute("user");
+    UserDto user = (UserDto) request.getAttribute("user");
 %>
 
 <html>

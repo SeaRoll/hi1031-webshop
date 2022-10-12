@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 import com.yohanmarcus.webshop.item.service.CartService;
 import lombok.NoArgsConstructor;
 
@@ -33,7 +33,7 @@ public class CartController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
-      Cart cart = (Cart) req.getSession().getAttribute("cart");
+      CartDto cart = (CartDto) req.getSession().getAttribute("cart");
       String clickedId = req.getParameter("itemId");
       cart = cartService.removeFromCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);

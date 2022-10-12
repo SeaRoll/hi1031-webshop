@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 import com.yohanmarcus.webshop.item.service.ItemService;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +30,7 @@ public class AdminItemController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
-      List<Item> items = itemService.findAll();
+      List<ItemDto> items = itemService.findAll();
       req.setAttribute("items", items);
       processRequest(req, resp, WEB_INF_JSP_ADMIN_ITEM_JSP);
     } catch (Exception e) {

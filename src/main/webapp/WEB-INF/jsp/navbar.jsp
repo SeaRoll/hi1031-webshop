@@ -1,17 +1,17 @@
-<%@ page import="com.yohanmarcus.webshop.item.domain.Cart" %>
-<%@ page import="com.yohanmarcus.webshop.user.domain.User" %>
 <%@ page import="com.yohanmarcus.webshop.user.domain.UserRole" %>
+<%@ page import="com.yohanmarcus.webshop.item.dto.CartDto" %>
+<%@ page import="com.yohanmarcus.webshop.user.dto.UserDto" %>
 <h1>90s Ecommerce</h1>
 <img src="/resources/ia-cat.webp" alt="cat-logo">
 <%
-    Cart cart = (Cart) request.getSession().getAttribute("cart");
-    User user = (User) request.getSession().getAttribute("user");
+    CartDto cart = (CartDto) request.getSession().getAttribute("cart");
+    UserDto user = (UserDto) request.getSession().getAttribute("user");
 %>
 <ul>
     <li><a href="/">Home</a></li>
     <li>
         <a href="/cart">
-            Cart (<%= cart.getCartItems().size() %>)
+            Cart (<%= cart.getItems().size() %>)
         </a>
     </li>
     <% if (user != null) { %>

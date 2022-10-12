@@ -1,9 +1,9 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 import com.yohanmarcus.webshop.order.service.OrderService;
-import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.RequestDispatcher;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -47,7 +48,7 @@ public class OrderControllerTest {
     HttpSession session = mock(HttpSession.class);
 
     when(req.getSession()).thenReturn(session);
-    when(session.getAttribute("user")).thenReturn(User.of("1", "ad", "ad", UserRole.USER));
+    when(session.getAttribute("user")).thenReturn(UserDto.from("1", "ad", UserRole.USER));
     when(req.getRequestDispatcher(eq("/WEB-INF/jsp/order.jsp"))).thenReturn(reqDispatch);
 
     orderController.doGet(req, res);
@@ -63,8 +64,8 @@ public class OrderControllerTest {
     HttpSession session = mock(HttpSession.class);
 
     when(req.getSession()).thenReturn(session);
-    when(session.getAttribute("cart")).thenReturn(new Cart());
-    when(session.getAttribute("user")).thenReturn(User.of("1", "ad", "ad", UserRole.USER));
+    when(session.getAttribute("cart")).thenReturn(CartDto.from(new ArrayList<>()));
+    when(session.getAttribute("user")).thenReturn(UserDto.from("1", "ad", UserRole.USER));
 
     orderController.doPost(req, res);
 
@@ -81,8 +82,8 @@ public class OrderControllerTest {
 
     when(req.getSession()).thenReturn(session);
     when(req.getRequestDispatcher(any())).thenReturn(reqDispatch);
-    when(session.getAttribute("cart")).thenReturn(new Cart());
-    when(session.getAttribute("user")).thenReturn(User.of("1", "ad", "ad", UserRole.USER));
+    when(session.getAttribute("cart")).thenReturn(CartDto.from(new ArrayList<>()));
+    when(session.getAttribute("user")).thenReturn(UserDto.from("1", "ad", UserRole.USER));
 
     doThrow(IllegalStateException.class).when(orderService).orderItems(any(), any());
     orderController.doPost(req, res);

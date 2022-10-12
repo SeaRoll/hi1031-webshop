@@ -1,12 +1,12 @@
-<%@ page import="com.yohanmarcus.webshop.item.domain.Item" %>
+<%@ page import="com.yohanmarcus.webshop.item.dto.ItemDto" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    Item item = (Item) request.getAttribute("item");
+    ItemDto item = (ItemDto) request.getAttribute("item");
     boolean editing = true;
     if (item == null) {
         editing = false;
-        item = Item.of(null, "", 0, 0, "", "");
+        item = ItemDto.from(null, "", 0, 0, "", "");
     }
 %>
 <html>

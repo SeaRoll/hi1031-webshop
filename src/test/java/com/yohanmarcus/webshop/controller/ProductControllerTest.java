@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 import com.yohanmarcus.webshop.item.service.CartService;
 import com.yohanmarcus.webshop.item.service.ItemService;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -42,7 +43,7 @@ class ProductControllerTest {
 
   @Test
   void testDoPost_savesAndRedirects() throws SQLException, IOException {
-    Cart cart = mock(Cart.class);
+    CartDto cart = CartDto.from(new ArrayList<>());
     HttpServletRequest req = mock(HttpServletRequest.class);
     HttpServletResponse res = mock(HttpServletResponse.class);
     HttpSession session = mock(HttpSession.class);

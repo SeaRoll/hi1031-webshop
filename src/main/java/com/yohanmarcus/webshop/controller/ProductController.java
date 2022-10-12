@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.CartDto;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 import com.yohanmarcus.webshop.item.service.CartService;
 import com.yohanmarcus.webshop.item.service.ItemService;
 import com.yohanmarcus.webshop.util.JspDispatcher;
@@ -35,7 +35,7 @@ public class ProductController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     try {
-      List<Item> itemList = itemService.findAll();
+      List<ItemDto> itemList = itemService.findAll();
       req.setAttribute("items", itemList);
       JspDispatcher.processRequest(req, resp, WEB_INF_JSP_PRODUCTS_JSP);
     } catch (Exception e) {
@@ -47,7 +47,7 @@ public class ProductController extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     try {
       String clickedId = req.getParameter("itemId");
-      Cart cart = (Cart) req.getSession().getAttribute("cart");
+      CartDto cart = (CartDto) req.getSession().getAttribute("cart");
       cart = cartService.addToCart(clickedId, cart);
       req.getSession().setAttribute("cart", cart);
     } catch (Exception e) {

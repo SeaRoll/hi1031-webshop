@@ -3,6 +3,8 @@ package com.yohanmarcus.webshop.item.service;
 import com.yohanmarcus.webshop.item.dao.ItemDao;
 import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.CartDto;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,16 +21,43 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public Cart addToCart(String clickedId, Cart cart) throws SQLException {
+  public CartDto addToCart(String clickedId, CartDto cart) throws SQLException {
+    // convert to cart
+    Cart newCart = CartMapper.toEntity(cart);
     Item newItem = itemDao.findById(clickedId, null).orElseThrow();
-    cart.addToCart(newItem);
-    return cart;
+    newCart.addToCart(newItem);
+
+    // cast back to dto
+    return CartDto.from(
+        newCart.getCartItems().stream()
+            .map(
+                item ->
+                    ItemDto.from(
+                        item.getId(),
+                        item.getName(),
+                        item.getPrice(),
+                        item.getQuantity(),
+                        item.getDescription(),
+                        item.getCategory()))
+            .toList());
   }
 
   @Override
-  public Cart removeFromCart(String clickedId, Cart cart) throws SQLException {
+  public CartDto removeFromCart(String clickedId, CartDto cart) throws SQLException {
+    Cart newCart = CartMapper.toEntity(cart);
     Item itemToRemove = itemDao.findById(clickedId, null).orElseThrow();
-    cart.removeFromCart(itemToRemove);
-    return cart;
+    newCart.removeFromCart(itemToRemove);
+    return CartDto.from(
+        newCart.getCartItems().stream()
+            .map(
+                item ->
+                    ItemDto.from(
+                        item.getId(),
+                        item.getName(),
+                        item.getPrice(),
+                        item.getQuantity(),
+                        item.getDescription(),
+                        item.getCategory()))
+            .toList());
   }
 }
