@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -36,7 +37,7 @@ class CartControllerTest {
 
   @Test
   void testDoPost_savesAndRedirects() throws SQLException, IOException {
-    CartDto cart = mock(CartDto.class);
+    CartDto cart = CartDto.from(new ArrayList<>());
     HttpServletRequest req = mock(HttpServletRequest.class);
     HttpServletResponse res = mock(HttpServletResponse.class);
     HttpSession session = mock(HttpSession.class);
