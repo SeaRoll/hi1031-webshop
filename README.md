@@ -1,6 +1,12 @@
 # HI1031 Laboration 1: Webbshop
 Webshop labben i kursen HI1031 Distribuerade informationssystem. Alla controller methods kan dispatcha JSP filer och även hantera post requests. Filter existerar så att JSP filen inte behöver hålla koll på session variabler ifall de inte existerar. Controller -> Service -> Dao. Dao har rollen att kalla på databas samt att servicen håller koll på transaktioner.
 
+### För Reine
+Uppdaterad nu så att alla domän objekt har sin egen medpartner DTO (viewmodel eller vad man ens kallar det) som då spottas ut av service lagret och service lagret kan nu bara ta emot/spotta DTO objekt och ingen domänobjekt.
+
+<img width="168" alt="Screenshot 2022-10-12 at 11 53 49" src="https://user-images.githubusercontent.com/26680151/195311885-3833ecb2-507c-4a05-9456-d74173bf5d4a.png">
+
+
 ### UML
 ![Controller drawio](https://user-images.githubusercontent.com/26680151/194854434-abcc0d01-5bb7-4b59-82ea-09e3f20e32b7.png)
 ![Service drawio](https://user-images.githubusercontent.com/26680151/194854456-ce85e578-5857-440b-9848-61162bbad7a1.png)
