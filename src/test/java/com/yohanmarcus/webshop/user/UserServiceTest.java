@@ -4,6 +4,7 @@ import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.user.service.UserService;
 import com.yohanmarcus.webshop.user.service.UserServiceImpl;
@@ -19,7 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class UserServiceTest {
 
@@ -169,7 +172,7 @@ class UserServiceTest {
             List.of(
                 User.of("1", "guy1", "passguy1", UserRole.STAFF),
                 User.of("2", "guy2", "passguy2", UserRole.USER)));
-    List<User> users = userService.findAll();
+    List<UserDto> users = userService.findAll();
     assertEquals(2, users.size());
   }
 
@@ -178,7 +181,7 @@ class UserServiceTest {
     when(mockDao.findById(eq("1"), eq(null)))
         .thenReturn(Optional.of(User.of("1", "test", "qwerty123456", UserRole.USER)));
 
-    User user = userService.findById("1");
+    UserDto user = userService.findById("1");
 
     assertEquals(user.getId(), "1");
   }

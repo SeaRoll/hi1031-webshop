@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.user.service;
 
-import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.form.UserForm;
 
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ public interface UserService {
    * @return logged in user
    * @throws SQLException sql error
    */
-  User loginUser(UserForm form) throws SQLException;
+  UserDto loginUser(UserForm form) throws SQLException;
 
   /**
    * Gets all users
@@ -33,7 +33,7 @@ public interface UserService {
    * @return List of all users
    * @throws SQLException sql error
    */
-  List<User> findAll() throws SQLException;
+  List<UserDto> findAll() throws SQLException;
 
   /**
    * Gets a user
@@ -42,7 +42,7 @@ public interface UserService {
    * @return user
    * @throws SQLException sql error
    */
-  User findById(String id) throws SQLException;
+  UserDto findById(String id) throws SQLException;
 
   /**
    * Updates user values

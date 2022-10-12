@@ -1,11 +1,17 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebFilter(urlPatterns = "/*")
 public class CartFilter implements Filter {
@@ -19,9 +25,9 @@ public class CartFilter implements Filter {
       throws IOException, ServletException {
     HttpServletRequest httpReq = (HttpServletRequest) servletRequest;
 
-    Cart cart = (Cart) httpReq.getSession().getAttribute("cart");
+    CartDto cart = (CartDto) httpReq.getSession().getAttribute("cart");
     if (cart == null) {
-      cart = new Cart();
+      cart = CartDto.from(new ArrayList<>());
       httpReq.getSession().setAttribute("cart", cart);
     }
 

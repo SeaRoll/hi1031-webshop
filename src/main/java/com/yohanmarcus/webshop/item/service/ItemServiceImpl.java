@@ -2,6 +2,7 @@ package com.yohanmarcus.webshop.item.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
 import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,15 +19,15 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public List<Item> findAll() throws SQLException {
-    return itemDao.findAll(null);
+  public List<ItemDto> findAll() throws SQLException {
+    return itemDao.findAll(null).stream().map(ItemMapper::toDto).toList();
   }
 
   @Override
-  public Item findById(String id) throws SQLException {
-    return itemDao
-        .findById(id, null)
-        .orElseThrow(() -> new IllegalStateException("Does not exist!"));
+  public ItemDto findById(String id) throws SQLException {
+    Item item =
+        itemDao.findById(id, null).orElseThrow(() -> new IllegalStateException("Does not exist!"));
+    return ItemMapper.toDto(item);
   }
 
   @Override
@@ -35,12 +36,12 @@ public class ItemServiceImpl implements ItemService {
   }
 
   @Override
-  public void create(Item item) throws SQLException {
-    itemDao.create(item, null);
+  public void create(ItemDto item) throws SQLException {
+    itemDao.create(ItemMapper.toEntity(item), null);
   }
 
   @Override
-  public void update(Item item) throws SQLException {
-    itemDao.update(item, null);
+  public void update(ItemDto item) throws SQLException {
+    itemDao.update(ItemMapper.toEntity(item), null);
   }
 }

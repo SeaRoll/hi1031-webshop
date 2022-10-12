@@ -4,6 +4,7 @@ import com.yohanmarcus.webshop.exception.InvalidFormException;
 import com.yohanmarcus.webshop.user.dao.UserDao;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.form.UserForm;
 import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
   }
 
-  public User loginUser(UserForm form) throws SQLException {
+  public UserDto loginUser(UserForm form) throws SQLException {
     TransactionManager tm = transactionFactory.begin();
     try {
       // check form validation
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
       // commit and return user dto
       tm.commit();
 
-      return foundUser;
+      return UserMapper.toDto(foundUser);
     } finally {
       tm.close();
     }
@@ -101,14 +102,13 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<User> findAll() throws SQLException {
-    return userDao.findAll(null);
+  public List<UserDto> findAll() throws SQLException {
+    return userDao.findAll(null).stream().map(UserMapper::toDto).toList();
   }
 
   @Override
-  public User findById(String id) throws SQLException {
-    return userDao
-        .findById(id, null)
-        .orElseThrow(() -> new IllegalStateException("Does not exist!"));
+  public UserDto findById(String id) throws SQLException {
+    return UserMapper.toDto(
+        userDao.findById(id, null).orElseThrow(() -> new IllegalStateException("Does not exist!")));
   }
 }

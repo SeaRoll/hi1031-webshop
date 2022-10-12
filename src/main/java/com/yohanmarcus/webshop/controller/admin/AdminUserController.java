@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.user.service.UserService;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +30,7 @@ public class AdminUserController extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
     try {
-      List<User> userList = userService.findAll();
+      List<UserDto> userList = userService.findAll();
       req.setAttribute("users", userList);
       processRequest(req, res, WEB_INF_JSP_ADMIN_USERS_JSP);
     } catch (Exception e) {

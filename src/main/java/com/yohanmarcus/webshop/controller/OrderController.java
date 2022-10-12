@@ -1,8 +1,8 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 import com.yohanmarcus.webshop.order.service.OrderService;
-import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import lombok.NoArgsConstructor;
 
 import javax.inject.Inject;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_CART_JSP;
 import static com.yohanmarcus.webshop.util.JspDispatcher.WEB_INF_JSP_ORDER_JSP;
@@ -30,7 +31,7 @@ public class OrderController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    User user = (User) req.getSession().getAttribute("user");
+    UserDto user = (UserDto) req.getSession().getAttribute("user");
     if (user == null) {
       resp.sendRedirect("/login");
       return;
@@ -46,12 +47,12 @@ public class OrderController extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    Cart cart = (Cart) req.getSession().getAttribute("cart");
-    User user = (User) req.getSession().getAttribute("user");
+    CartDto cart = (CartDto) req.getSession().getAttribute("cart");
+    UserDto user = (UserDto) req.getSession().getAttribute("user");
 
     try {
       orderService.orderItems(cart, user);
-      req.getSession().setAttribute("cart", new Cart());
+      req.getSession().setAttribute("cart", CartDto.from(new ArrayList<>()));
       resp.sendRedirect("/order");
     } catch (Exception e) {
       e.printStackTrace();

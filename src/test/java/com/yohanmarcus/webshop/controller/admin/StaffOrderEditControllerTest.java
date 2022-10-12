@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
+import com.yohanmarcus.webshop.order.dto.OrderDto;
 import com.yohanmarcus.webshop.order.service.OrderService;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,8 @@ public class StaffOrderEditControllerTest {
     HttpServletResponse res = mock(HttpServletResponse.class);
     RequestDispatcher reqDispatch = mock(RequestDispatcher.class);
 
-    when(orderService.getOrderById(any())).thenReturn(Order.of("1", "1", OrderStatus.PACKAGING));
+    when(orderService.getOrderById(any()))
+        .thenReturn(OrderDto.from("1", "1", OrderStatus.PACKAGING));
     when(req.getRequestDispatcher(eq(WEB_INF_JSP_ADMIN_ORDER_CHANGE_JSP))).thenReturn(reqDispatch);
 
     orderEditController.doGet(req, res);

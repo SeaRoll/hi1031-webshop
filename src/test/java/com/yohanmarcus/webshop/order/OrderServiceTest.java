@@ -3,16 +3,21 @@ package com.yohanmarcus.webshop.order;
 import com.yohanmarcus.webshop.item.dao.ItemDao;
 import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.service.CartMapper;
 import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
 import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderItems;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
-import com.yohanmarcus.webshop.order.domain.OrderWithItems;
+import com.yohanmarcus.webshop.order.dto.OrderDto;
+import com.yohanmarcus.webshop.order.dto.OrderWithItems;
+import com.yohanmarcus.webshop.order.service.OrderItemsMapper;
+import com.yohanmarcus.webshop.order.service.OrderMapper;
 import com.yohanmarcus.webshop.order.service.OrderService;
 import com.yohanmarcus.webshop.order.service.OrderServiceImpl;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
@@ -47,11 +52,12 @@ class OrderServiceTest {
     Cart cart = new Cart();
     Item item = allItems.get(0);
     cart.addToCart(item);
+    var dto = CartMapper.toDto(cart);
 
     when(tf.begin()).thenReturn(tm);
     when(itemDao.findAll(any())).thenReturn(allItems);
 
-    orderService.orderItems(cart, User.of("1", "a", "a", UserRole.ADMIN));
+    orderService.orderItems(dto, UserDto.from("1", "a", UserRole.ADMIN));
 
     verify(orderItemsDao)
         .create(
@@ -77,12 +83,14 @@ class OrderServiceTest {
     cart.addToCart(allItems.get(0));
     cart.addToCart(allItems.get(0));
 
+    var dto = CartMapper.toDto(cart);
+
     when(tf.begin()).thenReturn(tm);
     when(itemDao.findAll(any())).thenReturn(allItems);
 
     assertThrows(
         IllegalStateException.class,
-        () -> orderService.orderItems(cart, User.of("1", "a", "a", UserRole.ADMIN)));
+        () -> orderService.orderItems(dto, UserDto.from("1", "a", UserRole.ADMIN)));
 
     verify(tm, times(0)).commit();
     verify(tm).close();
@@ -90,7 +98,7 @@ class OrderServiceTest {
 
   @Test
   void testGetOrderByUser() throws SQLException {
-    User user = User.of("2", "admin", "admin", UserRole.USER);
+    UserDto user = UserDto.from("2", "admin", UserRole.USER);
     List<Order> order = List.of(Order.of("2", user.getId(), OrderStatus.PACKAGING));
     List<OrderItems> orderItems = List.of(OrderItems.of("1", "2", "a", 2, 3, "", ""));
 
@@ -102,8 +110,8 @@ class OrderServiceTest {
     List<OrderWithItems> orderWithItems = orderService.getOrderByUser(user);
     var ordWItems = orderWithItems.get(0);
 
-    assertEquals(orderItems, ordWItems.getItems());
-    assertEquals(order.get(0), ordWItems.getOrder());
+    assertEquals(orderItems.stream().map(OrderItemsMapper::toDto).toList(), ordWItems.getItems());
+    assertEquals(OrderMapper.toDto(order.get(0)), ordWItems.getOrder());
 
     verify(tm).commit();
     verify(tm).close();
@@ -123,8 +131,8 @@ class OrderServiceTest {
     List<OrderWithItems> orderWithItems = orderService.getAllOrders();
     var ordWItems = orderWithItems.get(0);
 
-    assertEquals(orderItems, ordWItems.getItems());
-    assertEquals(order.get(0), ordWItems.getOrder());
+    assertEquals(orderItems.stream().map(OrderItemsMapper::toDto).toList(), ordWItems.getItems());
+    assertEquals(OrderMapper.toDto(order.get(0)), ordWItems.getOrder());
 
     verify(tm).commit();
     verify(tm).close();
@@ -134,8 +142,9 @@ class OrderServiceTest {
   void testGetOrderById_getsOrder() throws SQLException {
     Order order = Order.of("1", "123", OrderStatus.PLACED);
     when(orderDao.findById(eq("1"), eq(null))).thenReturn(Optional.ofNullable(order));
-    Order gotOrder = orderService.getOrderById("1");
-    assertEquals(order, gotOrder);
+    OrderDto gotOrder = orderService.getOrderById("1");
+    assert order != null;
+    assertEquals(OrderMapper.toDto(order), gotOrder);
   }
 
   @Test
@@ -151,6 +160,7 @@ class OrderServiceTest {
     when(tf.begin()).thenReturn(tm);
     when(orderDao.findById(eq("1"), any())).thenReturn(Optional.ofNullable(order));
 
+    assert order != null;
     orderService.updateOrderStatus(order.getId(), OrderStatus.PACKAGING);
 
     verify(orderDao).update(any(), any());

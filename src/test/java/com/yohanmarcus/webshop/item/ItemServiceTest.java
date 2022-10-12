@@ -2,6 +2,7 @@ package com.yohanmarcus.webshop.item;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
 import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 import com.yohanmarcus.webshop.item.service.ItemService;
 import com.yohanmarcus.webshop.item.service.ItemServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -27,16 +28,24 @@ class ItemServiceTest {
     when(mockDao.findAll(null))
         .thenReturn(
             List.of(Item.of("1", "test", 2, 3, "", ""), Item.of("2", "tes2", 2, 3, "", "")));
-    List<Item> items = itemService.findAll();
+    List<ItemDto> items = itemService.findAll();
     assertEquals(2, items.size());
   }
 
   @Test
   void testFindOne_givesOnCorrectParameter() throws SQLException {
     Item returningItem = Item.of("1", "test", 2, 3, "", "");
+    ItemDto expectingItem =
+        ItemDto.from(
+            returningItem.getId(),
+            returningItem.getName(),
+            returningItem.getPrice(),
+            returningItem.getQuantity(),
+            returningItem.getDescription(),
+            returningItem.getCategory());
     when(mockDao.findById(eq("1"), eq(null))).thenReturn(Optional.of(returningItem));
-    Item item = itemService.findById("1");
-    assertEquals(returningItem, item);
+    ItemDto item = itemService.findById("1");
+    assertEquals(expectingItem, item);
   }
 
   @Test
@@ -47,14 +56,14 @@ class ItemServiceTest {
 
   @Test
   void testSaveCallsDao() throws SQLException {
-    Item save = Item.of("1", "test", 2, 3, "", "");
+    ItemDto save = ItemDto.from("1", "test", 2, 3, "", "");
     itemService.create(save);
     verify(mockDao).create(any(), any());
   }
 
   @Test
   void testUpdateCallsDao() throws SQLException {
-    Item save = Item.of("1", "test", 2, 3, "", "");
+    ItemDto save = ItemDto.from("1", "test", 2, 3, "", "");
     itemService.update(save);
     verify(mockDao).update(any(), any());
   }

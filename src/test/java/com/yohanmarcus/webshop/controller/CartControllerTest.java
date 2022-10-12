@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.controller;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
+import com.yohanmarcus.webshop.item.dto.CartDto;
 import com.yohanmarcus.webshop.item.service.CartService;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +36,7 @@ class CartControllerTest {
 
   @Test
   void testDoPost_savesAndRedirects() throws SQLException, IOException {
-    Cart cart = mock(Cart.class);
+    CartDto cart = mock(CartDto.class);
     HttpServletRequest req = mock(HttpServletRequest.class);
     HttpServletResponse res = mock(HttpServletResponse.class);
     HttpSession session = mock(HttpSession.class);

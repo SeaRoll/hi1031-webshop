@@ -1,15 +1,17 @@
 package com.yohanmarcus.webshop.order.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.dto.CartDto;
+import com.yohanmarcus.webshop.item.dto.ItemDto;
 import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
 import com.yohanmarcus.webshop.order.domain.Order;
 import com.yohanmarcus.webshop.order.domain.OrderItems;
 import com.yohanmarcus.webshop.order.domain.OrderStatus;
-import com.yohanmarcus.webshop.order.domain.OrderWithItems;
-import com.yohanmarcus.webshop.user.domain.User;
+import com.yohanmarcus.webshop.order.dto.OrderDto;
+import com.yohanmarcus.webshop.order.dto.OrderWithItems;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 
@@ -40,10 +42,12 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public Order getOrderById(String id) throws SQLException {
-    return orderDao
-        .findById(id, null)
-        .orElseThrow(() -> new IllegalStateException(String.format("Id %s not found", id)));
+  public OrderDto getOrderById(String id) throws SQLException {
+    var order =
+        orderDao
+            .findById(id, null)
+            .orElseThrow(() -> new IllegalStateException(String.format("Id %s not found", id)));
+    return OrderMapper.toDto(order);
   }
 
   @Override
@@ -63,11 +67,11 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void orderItems(Cart cart, User user) throws SQLException, IllegalStateException {
+  public void orderItems(CartDto cart, UserDto user) throws SQLException, IllegalStateException {
     TransactionManager tm = transactionFactory.begin();
     try {
       List<Item> items = itemDao.findAll(tm.getConn()); // todo: kan optimeras
-      List<Item> cartItems = cart.getCartItems();
+      List<ItemDto> cartItems = cart.getItems();
 
       if (cartItems.isEmpty()) throw new IllegalStateException("Cart is empty!");
 
@@ -75,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
       String orderId =
           orderDao.create(Order.of(null, user.getId(), OrderStatus.PLACED), tm.getConn());
 
-      for (Item cartItem : cartItems) {
+      for (ItemDto cartItem : cartItems) {
         // get item that is same as cart item
         Item itemWithSameId =
             items.stream()
@@ -115,14 +119,18 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public List<OrderWithItems> getOrderByUser(User user) throws SQLException {
+  public List<OrderWithItems> getOrderByUser(UserDto user) throws SQLException {
     TransactionManager tm = transactionFactory.begin();
     try {
       List<OrderWithItems> orderWithItems = new ArrayList<>();
       var orders = orderDao.findByUserId(user.getId(), tm.getConn());
       for (var order : orders) {
         orderWithItems.add(
-            OrderWithItems.of(order, orderItemsDao.findByOrderId(order.getId(), tm.getConn())));
+            OrderWithItems.from(
+                OrderMapper.toDto(order),
+                orderItemsDao.findByOrderId(order.getId(), tm.getConn()).stream()
+                    .map(OrderItemsMapper::toDto)
+                    .toList()));
       }
       tm.commit();
       return orderWithItems;
@@ -138,8 +146,13 @@ public class OrderServiceImpl implements OrderService {
       List<OrderWithItems> orderWithItems = new ArrayList<>();
       var orders = orderDao.findAll(tm.getConn());
       for (var order : orders) {
-        orderWithItems.add(
-            OrderWithItems.of(order, orderItemsDao.findByOrderId(order.getId(), tm.getConn())));
+        var dto =
+            OrderWithItems.from(
+                OrderMapper.toDto(order),
+                orderItemsDao.findByOrderId(order.getId(), tm.getConn()).stream()
+                    .map(OrderItemsMapper::toDto)
+                    .toList());
+        orderWithItems.add(dto);
       }
       tm.commit();
       return orderWithItems;

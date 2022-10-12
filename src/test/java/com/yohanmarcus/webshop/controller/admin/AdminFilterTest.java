@@ -1,7 +1,7 @@
 package com.yohanmarcus.webshop.controller.admin;
 
-import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
+import com.yohanmarcus.webshop.user.dto.UserDto;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.FilterChain;
@@ -41,7 +41,7 @@ public class AdminFilterTest {
     HttpSession session = mock(HttpSession.class);
 
     when(req.getSession()).thenReturn(session);
-    when(session.getAttribute("user")).thenReturn(User.of("1", "s", "", UserRole.USER));
+    when(session.getAttribute("user")).thenReturn(UserDto.from("1", "s", UserRole.USER));
 
     adminFilter.doFilter(req, res, filterChain);
 
@@ -56,7 +56,7 @@ public class AdminFilterTest {
     HttpSession session = mock(HttpSession.class);
 
     when(req.getSession()).thenReturn(session);
-    when(session.getAttribute("user")).thenReturn(User.of("1", "s", "", UserRole.STAFF));
+    when(session.getAttribute("user")).thenReturn(UserDto.from("1", "s", UserRole.STAFF));
 
     adminFilter.doFilter(req, res, filterChain);
 
@@ -71,7 +71,7 @@ public class AdminFilterTest {
     HttpSession session = mock(HttpSession.class);
 
     when(req.getSession()).thenReturn(session);
-    when(session.getAttribute("user")).thenReturn(User.of("1", "s", "", UserRole.ADMIN));
+    when(session.getAttribute("user")).thenReturn(UserDto.from("1", "s", UserRole.ADMIN));
 
     adminFilter.doFilter(req, res, filterChain);
 
