@@ -1,6 +1,5 @@
 package com.yohanmarcus.webshop.item.service;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
 import com.yohanmarcus.webshop.item.dto.CartDto;
 
 public class CartMapper {

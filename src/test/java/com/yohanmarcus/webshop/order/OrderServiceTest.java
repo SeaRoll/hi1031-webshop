@@ -1,9 +1,9 @@
 package com.yohanmarcus.webshop.order;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.domain.Cart;
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.service.Cart;
 import com.yohanmarcus.webshop.item.service.CartMapper;
+import com.yohanmarcus.webshop.item.service.Item;
 import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
 import com.yohanmarcus.webshop.order.domain.Order;
@@ -18,6 +18,8 @@ import com.yohanmarcus.webshop.order.service.OrderServiceImpl;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.user.dto.UserDto;
+import com.yohanmarcus.webshop.util.TestDomain.TestCart;
+import com.yohanmarcus.webshop.util.TestDomain.TestItem;
 import com.yohanmarcus.webshop.util.TransactionFactory;
 import com.yohanmarcus.webshop.util.TransactionManager;
 import org.junit.jupiter.api.Test;
@@ -30,10 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class OrderServiceTest {
 
@@ -48,8 +47,8 @@ class OrderServiceTest {
   @Test
   void testOrderItems_commitsOnWorking() throws SQLException {
     List<Item> allItems =
-        List.of(Item.of("1", "test", 2, 5, "", ""), Item.of("2", "hello", 3, 2, "", ""));
-    Cart cart = new Cart();
+        List.of(TestItem.of("1", "test", 2, 5, "", ""), TestItem.of("2", "hello", 3, 2, "", ""));
+    Cart cart = new TestCart();
     Item item = allItems.get(0);
     cart.addToCart(item);
     var dto = CartMapper.toDto(cart);
@@ -70,7 +69,7 @@ class OrderServiceTest {
                 item.getDescription(),
                 item.getCategory()),
             any());
-    verify(itemDao).update(eq(Item.of("1", "test", 2, 4, "", "")), any());
+    verify(itemDao).update(eq(TestItem.of("1", "test", 2, 4, "", "")), any());
     verify(tm).commit();
     verify(tm).close();
   }
@@ -78,8 +77,8 @@ class OrderServiceTest {
   @Test
   void testOrderItems_throwOnLowSupply() throws SQLException {
     List<Item> allItems =
-        List.of(Item.of("1", "test", 2, 1, "", ""), Item.of("2", "hello", 3, 2, "", ""));
-    Cart cart = new Cart();
+        List.of(TestItem.of("1", "test", 2, 1, "", ""), TestItem.of("2", "hello", 3, 2, "", ""));
+    Cart cart = new TestCart();
     cart.addToCart(allItems.get(0));
     cart.addToCart(allItems.get(0));
 

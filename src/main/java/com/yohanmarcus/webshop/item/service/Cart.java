@@ -1,12 +1,13 @@
-package com.yohanmarcus.webshop.item.domain;
+package com.yohanmarcus.webshop.item.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Cart {
   private final HashMap<String, Item> cartItems;
 
-  public Cart() {
+  protected Cart() {
     cartItems = new HashMap<>();
   }
 
@@ -57,7 +58,7 @@ public class Cart {
    * @return items
    */
   public List<Item> getCartItems() {
-    return cartItems.values().stream().toList();
+    return new ArrayList<>(cartItems.values());
   }
 
   /**

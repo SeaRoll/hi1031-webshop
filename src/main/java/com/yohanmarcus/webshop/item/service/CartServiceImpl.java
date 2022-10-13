@@ -1,8 +1,6 @@
 package com.yohanmarcus.webshop.item.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.domain.Cart;
-import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.dto.CartDto;
 import com.yohanmarcus.webshop.item.dto.ItemDto;
 

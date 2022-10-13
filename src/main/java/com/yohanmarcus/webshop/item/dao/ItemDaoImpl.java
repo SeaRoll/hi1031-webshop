@@ -1,6 +1,6 @@
 package com.yohanmarcus.webshop.item.dao;
 
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.service.Item;
 import org.apache.commons.dbutils.QueryRunner;
 
 import javax.enterprise.context.ApplicationScoped;

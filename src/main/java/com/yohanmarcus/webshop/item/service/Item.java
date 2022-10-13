@@ -1,12 +1,13 @@
-package com.yohanmarcus.webshop.item.domain;
+package com.yohanmarcus.webshop.item.service;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(staticName = "of", access = AccessLevel.PROTECTED)
 public class Item {
   private String id;
   private String name;

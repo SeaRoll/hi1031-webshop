@@ -1,10 +1,7 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.dto.ItemDto;
-import com.yohanmarcus.webshop.item.service.ItemService;
-import com.yohanmarcus.webshop.item.service.ItemServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -15,9 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ItemServiceTest {
   private final ItemDao mockDao = mock(ItemDao.class);

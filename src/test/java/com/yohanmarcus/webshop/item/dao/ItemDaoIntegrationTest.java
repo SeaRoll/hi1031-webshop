@@ -1,9 +1,8 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.dao;
 
-import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
-import com.yohanmarcus.webshop.item.domain.Item;
+import com.yohanmarcus.webshop.item.service.Item;
 import com.yohanmarcus.webshop.util.IntegrationTest;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,6 +66,16 @@ class ItemDaoIntegrationTest extends IntegrationTest {
   }
 
   private Item generateNewItem() {
-    return Item.of(null, "test-item", 10, 10, "hello", "cat");
+    return TestItem.of(null, "test-item", 10, 10, "hello", "cat");
+  }
+
+  @AllArgsConstructor(staticName = "of")
+  private static class TestItem extends Item {
+    private String id;
+    private String name;
+    private Integer price;
+    private Integer quantity;
+    private String description;
+    private String category;
   }
 }

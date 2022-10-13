@@ -1,7 +1,5 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.service;
 
-import com.yohanmarcus.webshop.item.domain.Cart;
-import com.yohanmarcus.webshop.item.domain.Item;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

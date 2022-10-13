@@ -1,10 +1,7 @@
-package com.yohanmarcus.webshop.item;
+package com.yohanmarcus.webshop.item.service;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
-import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.item.dto.CartDto;
-import com.yohanmarcus.webshop.item.service.CartService;
-import com.yohanmarcus.webshop.item.service.CartServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;

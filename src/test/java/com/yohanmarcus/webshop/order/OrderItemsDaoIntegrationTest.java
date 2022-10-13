@@ -2,7 +2,6 @@ package com.yohanmarcus.webshop.order;
 
 import com.yohanmarcus.webshop.item.dao.ItemDao;
 import com.yohanmarcus.webshop.item.dao.ItemDaoImpl;
-import com.yohanmarcus.webshop.item.domain.Item;
 import com.yohanmarcus.webshop.order.dao.OrderDao;
 import com.yohanmarcus.webshop.order.dao.OrderDaoImpl;
 import com.yohanmarcus.webshop.order.dao.OrderItemsDao;
@@ -15,6 +14,7 @@ import com.yohanmarcus.webshop.user.dao.UserDaoImpl;
 import com.yohanmarcus.webshop.user.domain.User;
 import com.yohanmarcus.webshop.user.domain.UserRole;
 import com.yohanmarcus.webshop.util.IntegrationTest;
+import com.yohanmarcus.webshop.util.TestDomain.TestItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +40,7 @@ class OrderItemsDaoIntegrationTest extends IntegrationTest {
     userDao.removeAll(null);
     itemDao.removeAll(null);
 
-    itemDao.create(Item.of(null, "t", 3, 2, "", ""), null);
+    itemDao.create(TestItem.of(null, "t", 3, 2, "", ""), null);
     String userId = userDao.create(User.of(null, "superadmin", "superadmin", UserRole.ADMIN), null);
     orderId = orderDao.create(Order.of(null, userId, OrderStatus.PLACED), null);
     orderId2 = orderDao.create(Order.of(null, userId, OrderStatus.PLACED), null);
